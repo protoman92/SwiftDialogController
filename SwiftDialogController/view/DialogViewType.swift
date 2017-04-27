@@ -11,15 +11,17 @@ import SwiftUIUtilities
 /// UIView subclasses that implement this protocol can be added to
 /// UIDialogViewController.
 @objc public protocol DialogViewType: class {
-    var orientationDetector: OrientationDetectorType { get }
     
-    init(withOrientationDetector detector: OrientationDetectorType)
+    /// Should be weakly referenced since this is a class-bound protocol.
+    weak var orientationDetector: OrientationDetectorType? { get }
+    
+    init(withDetector detector: OrientationDetectorType)
 }
 
 public extension DialogViewType {
     
     /// Get the current orientation.
     var orientation: BasicOrientation {
-        return orientationDetector.orientation
+        return orientationDetector?.orientation ?? .portrait
     }
 }

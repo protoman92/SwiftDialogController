@@ -49,7 +49,7 @@ public extension BasicOrientation {
 @objc public protocol LongSidePaddingDialogViewType: DialogViewType {
     
     /// Padding against the long size. In portrait mode, this represents
-    /// horizontal padding, while in landscape mode, vertical padding.
+    /// vertical padding, while in landscape mode, horizontal padding.
     var longSidePadding: CGFloat { get }
 }
 
@@ -60,21 +60,17 @@ public extension BasicOrientation {
 @objc public protocol ShortSidePaddingDialogViewType: DialogViewType {
     
     /// Padding against the short side. In portrait mode, this represents
-    /// vertical padding, while in landscape mode, horizontal padding.
+    /// horizontal padding, while in landscape mode, vertical padding.
     var shortSidePadding: CGFloat { get }
 }
 
-public extension LongSidePaddingDialogViewType {
+public extension LongSidePaddingDialogViewType where Self: UIView {
     
-    /// Get an Array of NSLayoutConstraint to attach to the parent view, based
-    /// on the current orientation.
+    /// Get an Array of NSLayoutConstraint for a parent/child view pair.
     ///
-    /// - Parameters:
-    ///   - parent: The parent UIView instance.
-    ///   - child: The child UIView instance.
+    /// - Parameter parent: The parent UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func longSideconstraint(forParent parent: UIView,
-                                   andChild child: UIView)
+    public func longPaddingConstraints(for parent: UIView)
         -> [NSLayoutConstraint]
     {
         let constant = longSidePadding
@@ -83,7 +79,7 @@ public extension LongSidePaddingDialogViewType {
         let secondAttribute = orientation.longSidePaddingSecondAttribute
         
         return [
-            NSLayoutConstraint(item: child,
+            NSLayoutConstraint(item: self,
                                attribute: firstAttribute,
                                relatedBy: .equal,
                                toItem: parent,
@@ -93,7 +89,7 @@ public extension LongSidePaddingDialogViewType {
             NSLayoutConstraint(item: parent,
                                attribute: secondAttribute,
                                relatedBy: .equal,
-                               toItem: child,
+                               toItem: self,
                                attribute: secondAttribute,
                                multiplier: 1,
                                constant: constant)
@@ -101,17 +97,13 @@ public extension LongSidePaddingDialogViewType {
     }
 }
 
-public extension ShortSidePaddingDialogViewType {
+public extension ShortSidePaddingDialogViewType where Self: UIView {
     
-    /// Get an Array of NSLayoutConstraint to attach to the parent view, based
-    /// on the current orientation.
+    /// Get an Array of NSLayoutConstraint for a parent/child view pair.
     ///
-    /// - Parameters:
-    ///   - parent: The parent UIView instance.
-    ///   - child: The child UIView instance.
+    /// - Parameter parent: The parent UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func shortSideconstraint(forParent parent: UIView,
-                                    andChild child: UIView)
+    public func shortPaddingConstraints(for parent: UIView)
         -> [NSLayoutConstraint]
     {
         let constant = shortSidePadding
@@ -120,7 +112,7 @@ public extension ShortSidePaddingDialogViewType {
         let secondAttribute = orientation.shortSidePaddingSecondAttribute
         
         return [
-            NSLayoutConstraint(item: child,
+            NSLayoutConstraint(item: self,
                                attribute: firstAttribute,
                                relatedBy: .equal,
                                toItem: parent,
@@ -130,7 +122,7 @@ public extension ShortSidePaddingDialogViewType {
             NSLayoutConstraint(item: parent,
                                attribute: secondAttribute,
                                relatedBy: .equal,
-                               toItem: child,
+                               toItem: self,
                                attribute: secondAttribute,
                                multiplier: 1,
                                constant: constant)
@@ -145,33 +137,22 @@ public extension ShortSidePaddingDialogViewType {
     LongSidePaddingDialogViewType,
     ShortSidePaddingDialogViewType {}
 
-public extension PaddingDialogViewType where Self: UIView {
+public extension UIView {
     
-    /// Get an Array of ViewBuilderComponentType based on long-side and
-    /// short-side padding values.
+    /// Convenient method to add a DialogViewType to another view, since
+    /// we cannot extend PaddingDialogViewType to automatically implement
+    /// builderComponents(for:).
     ///
-    /// - Parameter view: The view to be attached to.
-    /// - Returns: An Array of ViewBuilderComponentType.
-    public func builderComponents(for view: UIView) -> [ViewBuilderComponentType] {
-        return []
-    }
-}
-
-public class UITestView: UIView, PaddingDialogViewType {
-    /// Padding against the short side. In portrait mode, this represents
-    /// vertical padding, while in landscape mode, horizontal padding.
-    public let shortSidePadding: CGFloat = 0
-    
-    public let longSidePadding: CGFloat = 0
-    
-    public let orientationDetector: OrientationDetectorType
-    
-    public required init(withOrientationDetector detector: OrientationDetectorType) {
-        self.orientationDetector = detector
-        super.init(frame: CGRect.zero)
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    /// - Parameter view: A PaddingDialogViewType instance.
+    public func populateSubview<P>(with view: P)
+        where P: UIView, P: PaddingDialogViewType
+    {
+        let component = ViewBuilderComponent.builder()
+            .with(view: view)
+            .add(constraints: view.longPaddingConstraints(for: self))
+            .add(constraints: view.shortPaddingConstraints(for: self))
+            .build()
+        
+        self.populateSubviews(from: [component])
     }
 }

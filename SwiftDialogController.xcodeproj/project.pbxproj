@@ -10,12 +10,16 @@
 		8E7C5A9DAFD9446E89931E73 /* Pods_SwiftDialogController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1F6529EE283AAA2849E934 /* Pods_SwiftDialogController.framework */; };
 		9363EB34FE9A8DD233D67571 /* Pods_SwiftDialogControllerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19253C76A7819D18CBBC0B64 /* Pods_SwiftDialogControllerTests.framework */; };
 		D3696CFB1EB21C22007B7496 /* SwiftDialogController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3696CF11EB21C22007B7496 /* SwiftDialogController.framework */; };
-		D3696D001EB21C22007B7496 /* SwiftDialogControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696CFF1EB21C22007B7496 /* SwiftDialogControllerTests.swift */; };
 		D3696D021EB21C22007B7496 /* SwiftDialogController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3696CF41EB21C22007B7496 /* SwiftDialogController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3696D111EB2245C007B7496 /* DialogIdentifierType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D0C1EB2245C007B7496 /* DialogIdentifierType.swift */; };
 		D3696D121EB2245C007B7496 /* UIDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D0D1EB2245C007B7496 /* UIDialogController.swift */; };
 		D3696D131EB2245C007B7496 /* DialogViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D0F1EB2245C007B7496 /* DialogViewType.swift */; };
 		D3696D141EB2245C007B7496 /* PaddingDialogViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D101EB2245C007B7496 /* PaddingDialogViewType.swift */; };
+		D3696D181EB25CE3007B7496 /* UITestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D171EB25CE3007B7496 /* UITestView.swift */; };
+		D3696D1A1EB260B7007B7496 /* RatioDialogViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D191EB260B7007B7496 /* RatioDialogViewType.swift */; };
+		D3696D1C1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D1B1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift */; };
+		D3696D1F1EB26F77007B7496 /* UIDialogControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D1E1EB26F77007B7496 /* UIDialogControllerTests.swift */; };
+		D3696D221EB27041007B7496 /* UITestDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D211EB27041007B7496 /* UITestDialogController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,12 +42,16 @@
 		D3696CF41EB21C22007B7496 /* SwiftDialogController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftDialogController.h; sourceTree = "<group>"; };
 		D3696CF51EB21C22007B7496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3696CFA1EB21C22007B7496 /* SwiftDialogControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftDialogControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3696CFF1EB21C22007B7496 /* SwiftDialogControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDialogControllerTests.swift; sourceTree = "<group>"; };
 		D3696D011EB21C22007B7496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3696D0C1EB2245C007B7496 /* DialogIdentifierType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogIdentifierType.swift; sourceTree = "<group>"; };
 		D3696D0D1EB2245C007B7496 /* UIDialogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDialogController.swift; sourceTree = "<group>"; };
 		D3696D0F1EB2245C007B7496 /* DialogViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogViewType.swift; sourceTree = "<group>"; };
 		D3696D101EB2245C007B7496 /* PaddingDialogViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingDialogViewType.swift; sourceTree = "<group>"; };
+		D3696D171EB25CE3007B7496 /* UITestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITestView.swift; path = view/UITestView.swift; sourceTree = "<group>"; };
+		D3696D191EB260B7007B7496 /* RatioDialogViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatioDialogViewType.swift; sourceTree = "<group>"; };
+		D3696D1B1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatioPaddingDialogViewType.swift; sourceTree = "<group>"; };
+		D3696D1E1EB26F77007B7496 /* UIDialogControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIDialogControllerTests.swift; path = test/UIDialogControllerTests.swift; sourceTree = "<group>"; };
+		D3696D211EB27041007B7496 /* UITestDialogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITestDialogController.swift; path = controller/UITestDialogController.swift; sourceTree = "<group>"; };
 		D6D2B77A9377C061664E9C73 /* Pods-SwiftDialogControllerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDialogControllerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDialogControllerTests/Pods-SwiftDialogControllerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,7 +110,9 @@
 		D3696CFE1EB21C22007B7496 /* SwiftDialogControllerTests */ = {
 			isa = PBXGroup;
 			children = (
-				D3696CFF1EB21C22007B7496 /* SwiftDialogControllerTests.swift */,
+				D3696D201EB27029007B7496 /* controller */,
+				D3696D1D1EB26F65007B7496 /* test */,
+				D3696D151EB25CD0007B7496 /* view */,
 				D3696D011EB21C22007B7496 /* Info.plist */,
 			);
 			path = SwiftDialogControllerTests;
@@ -122,8 +132,34 @@
 			children = (
 				D3696D0F1EB2245C007B7496 /* DialogViewType.swift */,
 				D3696D101EB2245C007B7496 /* PaddingDialogViewType.swift */,
+				D3696D191EB260B7007B7496 /* RatioDialogViewType.swift */,
+				D3696D1B1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		D3696D151EB25CD0007B7496 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				D3696D171EB25CE3007B7496 /* UITestView.swift */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
+		D3696D1D1EB26F65007B7496 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				D3696D1E1EB26F77007B7496 /* UIDialogControllerTests.swift */,
+			);
+			name = test;
+			sourceTree = "<group>";
+		};
+		D3696D201EB27029007B7496 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				D3696D211EB27041007B7496 /* UITestDialogController.swift */,
+			);
+			name = controller;
 			sourceTree = "<group>";
 		};
 		F1D36DB0CEBCD01AC6043C4E /* Pods */ = {
@@ -219,6 +255,7 @@
 					D3696CF91EB21C22007B7496 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = S3V9CCW695;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -344,6 +381,8 @@
 				D3696D131EB2245C007B7496 /* DialogViewType.swift in Sources */,
 				D3696D111EB2245C007B7496 /* DialogIdentifierType.swift in Sources */,
 				D3696D141EB2245C007B7496 /* PaddingDialogViewType.swift in Sources */,
+				D3696D1A1EB260B7007B7496 /* RatioDialogViewType.swift in Sources */,
+				D3696D1C1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift in Sources */,
 				D3696D121EB2245C007B7496 /* UIDialogController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,7 +391,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3696D001EB21C22007B7496 /* SwiftDialogControllerTests.swift in Sources */,
+				D3696D181EB25CE3007B7496 /* UITestView.swift in Sources */,
+				D3696D221EB27041007B7496 /* UITestDialogController.swift in Sources */,
+				D3696D1F1EB26F77007B7496 /* UIDialogControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +411,7 @@
 		D3696D031EB21C22007B7496 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -423,6 +465,7 @@
 		D3696D041EB21C22007B7496 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -470,6 +513,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8FFD4013952C6C695229D209 /* Pods-SwiftDialogController.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = S3V9CCW695;
@@ -490,6 +534,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1CAD8627A379255AF149D90D /* Pods-SwiftDialogController.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = S3V9CCW695;
@@ -510,12 +555,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6D2B77A9377C061664E9C73 /* Pods-SwiftDialogControllerTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = S3V9CCW695;
 				INFOPLIST_FILE = SwiftDialogControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiften.SwiftDialogControllerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -524,12 +572,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9D2DA1060DEF096838168B5A /* Pods-SwiftDialogControllerTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = S3V9CCW695;
 				INFOPLIST_FILE = SwiftDialogControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiften.SwiftDialogControllerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
