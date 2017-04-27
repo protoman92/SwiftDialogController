@@ -1,0 +1,25 @@
+PODS:
+  - RxCocoa (3.4.0):
+    - RxSwift (~> 3.4)
+  - RxSwift (3.4.0)
+  - SwiftUIUtilities (1.3.8):
+    - SwiftUIUtilities/Main (= 1.3.8)
+    - SwiftUtilities/Main
+  - SwiftUIUtilities/Main (1.3.8):
+    - SwiftUtilities/Main
+  - SwiftUtilities/Main (1.3.9):
+    - RxCocoa (~> 3.0)
+    - RxSwift (~> 3.0)
+
+DEPENDENCIES:
+  - SwiftUIUtilities
+
+SPEC CHECKSUMS:
+  RxCocoa: d14ef6b6029e1ddc6e966508c09289090de68ff9
+  RxSwift: 3789a1af753002a14edecdb698a2424624296a9c
+  SwiftUIUtilities: 13f8132922093406a69a4a866a5ff2c1c33e4300
+  SwiftUtilities: 8f929973652bbe9df450f1afc2a6bee49b5b2f83
+
+PODFILE CHECKSUM: d881ae258de66478ab6609920f215b90ffe46d97
+
+COCOAPODS: 1.2.1
