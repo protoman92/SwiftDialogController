@@ -62,17 +62,14 @@ public extension RatioPaddingDialogViewType where Self: UIView {
         
         let allConstraints = superview.constraints
         let rpConstraints = self.ratioPaddingConstraints(for: superview)
+        let identifiers = rpConstraints.flatMap({$0.identifier})
         
-        for constraint in rpConstraints {
-            if
-                let identifier = constraint.identifier,
-                let oldConstraint = allConstraints.filter({
-                    $0.identifier == identifier
-                }).first
-            {
-                superview.replaceConstraint(oldConstraint, with: constraint)
-            }
-        }
+        let oldConstraints = identifiers.flatMap({identifier in
+            allConstraints.filter({$0.identifier == identifier}).first
+        })
+        
+        superview.removeConstraints(oldConstraints)
+        superview.addConstraints(rpConstraints)
     }
 }
 

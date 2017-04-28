@@ -177,17 +177,14 @@ public extension RatioDialogViewType where Self: UIView {
         
         let allConstraints = superview.constraints
         let ratioConstraints = self.ratioConstraints(for: superview)
+        let identifiers = ratioConstraints.flatMap({$0.identifier})
         
-        for constraint in ratioConstraints {
-            if
-                let identifier = constraint.identifier,
-                let oldConstraint = allConstraints.filter({
-                    $0.identifier == identifier
-                }).first
-            {
-                superview.replaceConstraint(oldConstraint, with: constraint)
-            }
-        }
+        let oldConstraints = identifiers.flatMap({identifier in
+            allConstraints.filter({$0.identifier == identifier}).first
+        })
+        
+        superview.removeConstraints(oldConstraints)
+        superview.addConstraints(ratioConstraints)
     }
 }
 

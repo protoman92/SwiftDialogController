@@ -201,14 +201,14 @@ public extension PaddingDialogViewType where Self: UIView {
         
         let allConstraints = superview.constraints
         let paddingConstraints = self.paddingConstraints(for: superview)
+        let identifiers = paddingConstraints.flatMap({$0.identifier})
         
-        for constraint in paddingConstraints {
-            if let oldConstraint = allConstraints.filter({
-                $0.identifier == constraint.identifier
-            }).first {
-                superview.replaceConstraint(oldConstraint, with: constraint)
-            }
-        }
+        let oldConstraints = identifiers.flatMap({identifier in
+            allConstraints.filter({$0.identifier == identifier}).first
+        })
+        
+        superview.removeConstraints(oldConstraints)
+        superview.addConstraints(paddingConstraints)
     }
 }
 
