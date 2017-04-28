@@ -15,8 +15,8 @@ public extension BasicOrientation {
     /// constraints for padding constraints.
     public var longSidePaddingFirstAttribute: NSLayoutAttribute {
         switch self {
-        case .landscape: return .top
-        case .portrait: return .left
+        case .landscape: return .left
+        case .portrait: return .top
         }
     }
     
@@ -24,8 +24,8 @@ public extension BasicOrientation {
     /// constraints for padding constraints.
     public var longSidePaddingSecondAttribute: NSLayoutAttribute {
         switch self {
-        case .landscape: return .bottom
-        case .portrait: return .right
+        case .landscape: return .right
+        case .portrait: return .bottom
         }
     }
     
@@ -137,6 +137,19 @@ public extension ShortSidePaddingDialogViewType where Self: UIView {
     LongSidePaddingDialogViewType,
     ShortSidePaddingDialogViewType {}
 
+public extension PaddingDialogViewType where Self: UIView {
+    
+    /// Get all padding constraints.
+    ///
+    /// - Parameter parent: The parent UIView.
+    /// - Returns: An Array of NSLayoutConstraint.
+    public func paddingConstraints(for parent: UIView) -> [NSLayoutConstraint] {
+        let long = longPaddingConstraints(for: parent)
+        let short = shortPaddingConstraints(for: parent)
+        return long + short
+    }
+}
+
 public extension UIView {
     
     /// Convenient method to add a DialogViewType to another view, since
@@ -149,8 +162,7 @@ public extension UIView {
     {
         let component = ViewBuilderComponent.builder()
             .with(view: view)
-            .add(constraints: view.longPaddingConstraints(for: self))
-            .add(constraints: view.shortPaddingConstraints(for: self))
+            .with(constraints: view.paddingConstraints(for: self))
             .build()
         
         self.populateSubviews(from: [component])

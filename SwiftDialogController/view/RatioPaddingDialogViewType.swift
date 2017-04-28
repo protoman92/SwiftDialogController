@@ -16,6 +16,45 @@ public protocol RatioPaddingDialogViewType:
     LongSideRatioDialogViewType,
     ShortSidePaddingDialogViewType {}
 
+public extension RatioPaddingDialogViewType where Self: UIView {
+    
+    /// Get all ratio padding constraints. We add centerX and centerY
+    /// constraints as well to place this view in the middle of the parent
+    /// view.
+    ///
+    /// - Parameter parent: The parent UIView.
+    /// - Returns: An Array of NSLayoutConstraint.
+    public func ratioPaddingConstraints(for parent: UIView)
+        -> [NSLayoutConstraint]
+    {
+        let long = longRatioConstraints(for: parent)
+        let short = shortPaddingConstraints(for: parent)
+        var constraints = long + short
+        
+        constraints.append(
+            NSLayoutConstraint(item: self,
+                               attribute: .centerX,
+                               relatedBy: .equal,
+                               toItem: parent,
+                               attribute: .centerX,
+                               multiplier: 1,
+                               constant: 0)
+        )
+        
+        constraints.append(
+            NSLayoutConstraint(item: self,
+                               attribute: .centerY,
+                               relatedBy: .equal,
+                               toItem: parent,
+                               attribute: .centerY,
+                               multiplier: 1,
+                               constant: 0)
+        )
+        
+        return constraints
+    }
+}
+
 public extension UIView {
     
     /// Convenient method to add a DialogViewType to another view, since
@@ -28,8 +67,7 @@ public extension UIView {
     {
         let component = ViewBuilderComponent.builder()
             .with(view: view)
-            .add(constraints: view.longRatioConstraints(for: self))
-            .add(constraints: view.shortPaddingConstraints(for: self))
+            .with(constraints: view.ratioPaddingConstraints(for: self))
             .build()
         
         self.populateSubviews(from: [component])

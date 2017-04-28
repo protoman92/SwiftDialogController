@@ -1,0 +1,5 @@
+osx_image: xcode8.3
+language: objective-c
+xcode_workspace: SwiftDialogController.xcworkspace
+xcode_scheme: SwiftDialogController
+xcode_sdk: iphonesimulator10.1

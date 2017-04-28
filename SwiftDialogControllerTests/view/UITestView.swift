@@ -23,18 +23,42 @@ class UIBaseDialogView: UIView {
 }
 
 class UIPaddingDialogView: UIBaseDialogView {
-    let shortSidePadding: CGFloat = 0
-    let longSidePadding: CGFloat = 0
+    var shortSidePadding: CGFloat = 0
+    var longSidePadding: CGFloat = 0
+    
+    convenience init(withDetector detector: OrientationDetectorType,
+                     withLongSidePadding longSidePadding: CGFloat,
+                     withShortSidePadding shortSidePadding: CGFloat) {
+        self.init(withDetector: detector)
+        self.longSidePadding = longSidePadding
+        self.shortSidePadding = shortSidePadding
+    }
 }
 
 class UIRatioDialogView: UIBaseDialogView {
-    let shortSideRatio: CGFloat = 1 / 2
-    let longSideRatio: CGFloat = 1 / 2
+    var shortSideRatio: CGFloat = 1 / 2
+    var longSideRatio: CGFloat = 1 / 2
+    
+    convenience init(withDetector detector: OrientationDetectorType,
+                     withLongSideRatio longSideRatio: CGFloat,
+                     withShortSideRatio shortSideRatio: CGFloat) {
+        self.init(withDetector: detector)
+        self.longSideRatio = longSideRatio
+        self.shortSideRatio = shortSideRatio
+    }
 }
 
 class UIRatioPaddingDialogView: UIBaseDialogView {
-    let shortSidePadding: CGFloat = 0
-    let longSideRatio: CGFloat = 1 / 2
+    var shortSidePadding: CGFloat = 0
+    var longSideRatio: CGFloat = 1 / 2
+    
+    convenience init(withDetector detector: OrientationDetectorType,
+                     withLongSideRatio longSideRatio: CGFloat,
+                     withShortSidePadding shortSidePadding: CGFloat) {
+        self.init(withDetector: detector)
+        self.longSideRatio = longSideRatio
+        self.shortSidePadding = shortSidePadding
+    }
 }
 
 extension UIBaseDialogView: DialogViewType {}
