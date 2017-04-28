@@ -22,6 +22,10 @@ class UITestDialogController: UIDialogController {
     public class Presenter: UIDialogController.DialogPresenter {
         let fake_dismiss = FakeDetails.builder().build()
         
+        init(view: UITestDialogController) {
+            super.init(view: view)
+        }
+        
         override func dismiss(dialog: UIViewController?) {
             fake_dismiss.onMethodCalled(withParameters: dialog)
             super.dismiss(dialog: dialog)

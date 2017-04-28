@@ -27,7 +27,16 @@ open class UIDialogController: UIBaseViewController {
         }).first as? UIButton
     }
     
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        modalTransitionStyle = .crossDissolve
+    }
+    
     open class DialogPresenter: BaseViewControllerPresenter {
+        public override init<P: UIDialogController>(view: P) {
+            super.init(view: view)
+        }
+        
         override open func viewDidLoad(for controller: UIViewController) {
             super.viewDidLoad(for: controller)
             addDismissButton(for: controller)
@@ -45,7 +54,9 @@ open class UIDialogController: UIBaseViewController {
             
             let button = UIButton()
             button.accessibilityIdentifier = backgroundButtonId
+            button.alpha = 0.6
             button.backgroundColor = .darkGray
+            button.translatesAutoresizingMaskIntoConstraints = false
             
             button.rx.controlEvent(.touchDown)
                 .asObservable()
