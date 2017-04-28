@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8E7C5A9DAFD9446E89931E73 /* Pods_SwiftDialogController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1F6529EE283AAA2849E934 /* Pods_SwiftDialogController.framework */; };
 		9363EB34FE9A8DD233D67571 /* Pods_SwiftDialogControllerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19253C76A7819D18CBBC0B64 /* Pods_SwiftDialogControllerTests.framework */; };
+		D31B4AF11EB39F01006F657D /* SwiftDialogController.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D31B4AF01EB39F01006F657D /* SwiftDialogController.podspec */; };
 		D3696CFB1EB21C22007B7496 /* SwiftDialogController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3696CF11EB21C22007B7496 /* SwiftDialogController.framework */; };
 		D3696D021EB21C22007B7496 /* SwiftDialogController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3696CF41EB21C22007B7496 /* SwiftDialogController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3696D111EB2245C007B7496 /* DialogIdentifierType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D0C1EB2245C007B7496 /* DialogIdentifierType.swift */; };
@@ -38,6 +39,7 @@
 		8FFD4013952C6C695229D209 /* Pods-SwiftDialogController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDialogController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDialogController/Pods-SwiftDialogController.debug.xcconfig"; sourceTree = "<group>"; };
 		9D2DA1060DEF096838168B5A /* Pods-SwiftDialogControllerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDialogControllerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDialogControllerTests/Pods-SwiftDialogControllerTests.release.xcconfig"; sourceTree = "<group>"; };
 		CF1F6529EE283AAA2849E934 /* Pods_SwiftDialogController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftDialogController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D31B4AF01EB39F01006F657D /* SwiftDialogController.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SwiftDialogController.podspec; sourceTree = "<group>"; };
 		D3696CF11EB21C22007B7496 /* SwiftDialogController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftDialogController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3696CF41EB21C22007B7496 /* SwiftDialogController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftDialogController.h; sourceTree = "<group>"; };
 		D3696CF51EB21C22007B7496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		D3696CE71EB21C22007B7496 = {
 			isa = PBXGroup;
 			children = (
+				D31B4AF01EB39F01006F657D /* SwiftDialogController.podspec */,
 				D3696CF31EB21C22007B7496 /* SwiftDialogController */,
 				D3696CFE1EB21C22007B7496 /* SwiftDialogControllerTests */,
 				D3696CF21EB21C22007B7496 /* Products */,
@@ -283,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D31B4AF11EB39F01006F657D /* SwiftDialogController.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
