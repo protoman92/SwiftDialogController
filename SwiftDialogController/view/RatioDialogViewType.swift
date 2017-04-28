@@ -27,12 +27,36 @@ public extension BasicOrientation {
     }
 }
 
+/// Implement this protocol to provide constraint identifier.
+@objc public protocol LongSideRatioIdentifierType {}
+
+public extension LongSideRatioIdentifierType {
+    
+    /// Identifier for long-side attribute constraint.
+    public var longSideRatioAttribute: String {
+        return "longSideRatioAttribute"
+    }
+}
+
+/// Implement this protocol to provide constraint identifier.
+@objc public protocol ShortSideRatioIdentifierType {}
+
+public extension ShortSideRatioIdentifierType {
+    
+    /// Identifier for short-side attribute constraint.
+    public var shortSideRatioAttribute: String {
+        return "shortSideRatioFirstAttribute"
+    }
+}
+
 /// Preset DialogViewType that requires long-side ratio.
 ///
 /// UIView instances that implement this protocol will be have its long side
 /// be a proportion of the parent view's long side.
-@objc public protocol LongSideRatioDialogViewType: DialogViewType {
-    
+@objc public protocol LongSideRatioDialogViewType:
+    DialogViewType,
+    LongSideRatioIdentifierType
+{
     /// Ratio against the long size. In portrait mode, this represents
     /// vertical ratio, while in landscape mode, horizontal ratio.
     var longSideRatio: CGFloat { get }
@@ -42,8 +66,10 @@ public extension BasicOrientation {
 ///
 /// UIView instances that implement this protocol will be have its short side
 /// be a proportion of the parent view's long side.
-@objc public protocol ShortSideRatioDialogViewType: DialogViewType {
-    
+@objc public protocol ShortSideRatioDialogViewType:
+    DialogViewType,
+    ShortSideRatioIdentifierType
+{
     /// Ratio against the short size. In portrait mode, this represents
     /// horizontal ratio, while in landscape mode, vertical ratio.
     var shortSideRatio: CGFloat { get }
@@ -55,23 +81,23 @@ public extension LongSideRatioDialogViewType where Self: UIView {
     ///
     /// - Parameter parent: The parent UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func longRatioConstraints(for parent: UIView)
-        -> [NSLayoutConstraint]
-    {
+    public func longRatioConstraints(for parent: UIView) -> [NSLayoutConstraint] {
         let longSideRatio = self.longSideRatio
         let multiplier = longSideRatio > 0 ? longSideRatio : 1
         let orientation = self.orientation
         let attribute = orientation.longSideRatioAttribute
         
-        return [
-            NSLayoutConstraint(item: self,
-                               attribute: attribute,
-                               relatedBy: .equal,
-                               toItem: parent,
-                               attribute: attribute,
-                               multiplier: multiplier,
-                               constant: 0)
-        ]
+        let constraint = NSLayoutConstraint(item: self,
+                                            attribute: attribute,
+                                            relatedBy: .equal,
+                                            toItem: parent,
+                                            attribute: attribute,
+                                            multiplier: multiplier,
+                                            constant: 0)
+        
+        constraint.identifier = longSideRatioAttribute
+        
+        return [constraint]
     }
 }
 
@@ -81,23 +107,23 @@ public extension ShortSideRatioDialogViewType where Self: UIView {
     ///
     /// - Parameter parent: The parent UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func shortRatioConstraints(for parent: UIView)
-        -> [NSLayoutConstraint]
-    {
+    public func shortRatioConstraints(for parent: UIView) -> [NSLayoutConstraint] {
         let shortSideRatio = self.shortSideRatio
         let multiplier = shortSideRatio > 0 ? shortSideRatio : 1
         let orientation = self.orientation
         let attribute = orientation.shortSideRatioAttribute
         
-        return [
-            NSLayoutConstraint(item: self,
-                               attribute: attribute,
-                               relatedBy: .equal,
-                               toItem: parent,
-                               attribute: attribute,
-                               multiplier: multiplier,
-                               constant: 0)
-        ]
+        let constraint = NSLayoutConstraint(item: self,
+                                            attribute: attribute,
+                                            relatedBy: .equal,
+                                            toItem: parent,
+                                            attribute: attribute,
+                                            multiplier: multiplier,
+                                            constant: 0)
+        
+        constraint.identifier = shortSideRatioAttribute
+        
+        return [constraint]
     }
 }
 
@@ -139,6 +165,29 @@ public extension RatioDialogViewType where Self: UIView {
         )
         
         return constraints
+    }
+    
+    /// Change constraints on screen orientation changes.
+    ///
+    /// - Parameter orientation: The new screen orientation.
+    public func screenOrientationDidChange(to orientation: BasicOrientation) {
+        guard let superview = self.superview else {
+            return
+        }
+        
+        let allConstraints = superview.constraints
+        let ratioConstraints = self.ratioConstraints(for: superview)
+        
+        for constraint in ratioConstraints {
+            if
+                let identifier = constraint.identifier,
+                let oldConstraint = allConstraints.filter({
+                    $0.identifier == identifier
+                }).first
+            {
+                superview.replaceConstraint(oldConstraint, with: constraint)
+            }
+        }
     }
 }
 

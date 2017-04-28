@@ -90,6 +90,15 @@ open class UIDialogController: UIBaseViewController {
             where V: UIView, V: PaddingDialogViewType
         {
             controller.view?.populateSubview(with: view)
+            
+            // When screen size changes, change constraints for this dialog
+            // view as well.
+            rxScreenOrientation
+                .doOnNext({[weak view] in
+                    view?.screenOrientationDidChange(to: $0)
+                })
+                .subscribe()
+                .addDisposableTo(disposeBag)
         }
         
         /// Add a RatioDialogViewType instance as a subview to the main view.
@@ -101,6 +110,15 @@ open class UIDialogController: UIBaseViewController {
             where V: UIView, V: RatioDialogViewType
         {
             controller.view?.populateSubview(with: view)
+            
+            // When screen size changes, change constraints for this dialog
+            // view as well.
+            rxScreenOrientation
+                .doOnNext({[weak view] in
+                    view?.screenOrientationDidChange(to: $0)
+                })
+                .subscribe()
+                .addDisposableTo(disposeBag)
         }
         
         /// Add a RatioPaddingDialogViewType instance as a subview to the main
@@ -113,6 +131,15 @@ open class UIDialogController: UIBaseViewController {
             where V: UIView, V: RatioPaddingDialogViewType
         {
             controller.view?.populateSubview(with: view)
+            
+            // When screen size changes, change constraints for this dialog
+            // view as well.
+            rxScreenOrientation
+                .doOnNext({[weak view] in
+                    view?.screenOrientationDidChange(to: $0)
+                })
+                .subscribe()
+                .addDisposableTo(disposeBag)
         }
         
         /// Dismiss the currently displayed dialog.

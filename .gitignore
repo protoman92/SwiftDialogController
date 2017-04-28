@@ -27,14 +27,12 @@ xcuserdata/
 pod-publish
 
 ### Xcode Patch ###
-*.xcodeproj/*
+*.xcodeproj/project.xcworkspace/
 !*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 
 Pods
 docs
-xcshareddata
 
 # End of https://www.gitignore.io/api/xcode
