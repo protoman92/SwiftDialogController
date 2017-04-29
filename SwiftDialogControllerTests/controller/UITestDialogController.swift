@@ -12,7 +12,7 @@ import SwiftUtilitiesTests
 import UIKit
 @testable import SwiftDialogController
 
-class Presenter: UIDialogController.DialogPresenter {
+class Presenter: DialogPresenter {
     let fake_dismiss = FakeDetails.builder().build()
     
     required init<P: UIDialogController>(view: P) {
@@ -26,7 +26,7 @@ class Presenter: UIDialogController.DialogPresenter {
 }
 
 /// Superficial implementation to allow calls to viewWillTransition(to:with:).
-extension UIDialogController.DialogPresenter: UIViewControllerTransitionCoordinator {
+extension DialogPresenter: UIViewControllerTransitionCoordinator {
     @available(iOS 8.0, *)
     public var targetTransform: CGAffineTransform {
         return CGAffineTransform()

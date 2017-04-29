@@ -47,129 +47,129 @@ open class UIDialogController: UIBaseViewController {
         super.viewDidLoad()
         modalTransitionStyle = .crossDissolve
     }
+}
+
+open class DialogPresenter: BaseViewControllerPresenter {
+    public override required init<P: UIDialogController>(view: P) {
+        super.init(view: view)
+    }
     
-    open class DialogPresenter: BaseViewControllerPresenter {
-        public override required init<P: UIDialogController>(view: P) {
-            super.init(view: view)
+    override open func viewDidLoad(for controller: UIViewController) {
+        super.viewDidLoad(for: controller)
+        addDismissButton(for: controller)
+    }
+    
+    /// Add a background button that dismisses the current dialog once
+    /// clicked.
+    ///
+    /// - Parameter controller: The current UIViewController instance.
+    open func addDismissButton(for controller: UIViewController) {
+        guard let view = controller.view else {
+            debugException()
+            return
         }
         
-        override open func viewDidLoad(for controller: UIViewController) {
-            super.viewDidLoad(for: controller)
-            addDismissButton(for: controller)
-        }
+        let button = UIButton()
+        button.accessibilityIdentifier = backgroundButtonId
+        button.alpha = 0.6
+        button.backgroundColor = .darkGray
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        /// Add a background button that dismisses the current dialog once 
-        /// clicked.
-        ///
-        /// - Parameter controller: The current UIViewController instance.
-        open func addDismissButton(for controller: UIViewController) {
-            guard let view = controller.view else {
-                debugException()
-                return
-            }
-            
-            let button = UIButton()
-            button.accessibilityIdentifier = backgroundButtonId
-            button.alpha = 0.6
-            button.backgroundColor = .darkGray
-            button.translatesAutoresizingMaskIntoConstraints = false
-            
-            button.rx.controlEvent(.touchDown)
-                .asObservable()
-                .doOnNext({[weak self, weak controller] in
-                    self?.dismiss(dialog: controller)
-                })
-                .subscribe()
-                .addDisposableTo(disposeBag)
-            
-            view.addSubview(button)
-            view.addFitConstraints(for: button)
-        }
+        button.rx.controlEvent(.touchDown)
+            .asObservable()
+            .doOnNext({[weak self, weak controller] in
+                self?.dismiss(dialog: controller)
+            })
+            .subscribe()
+            .addDisposableTo(disposeBag)
         
-        /// Add a DialogViewType instance as a subview to the main view.
-        ///
-        /// - Parameters:
-        ///   - view: A DialogViewType instance.
-        ///   - controller: The current UIViewController instance.
-        open func add<V>(view: V, for controller: UIViewController)
-            where V: UIView, V: DialogViewType & ViewBuilderType
-        {
-            controller.view?.populateSubviews(with: view)
-        }
+        view.addSubview(button)
+        view.addFitConstraints(for: button)
+    }
+    
+    /// Add a DialogViewType instance as a subview to the main view.
+    ///
+    /// - Parameters:
+    ///   - view: A DialogViewType instance.
+    ///   - controller: The current UIViewController instance.
+    open func add<V>(view: V, for controller: UIViewController)
+        where V: UIView, V: DialogViewType & ViewBuilderType
+    {
+        controller.view?.populateSubviews(with: view)
+    }
+    
+    /// Add a PaddingDialogViewType instance as a subview to the main view.
+    ///
+    /// - Parameters:
+    ///   - view: A PaddingDialogViewType instance.
+    ///   - controller: The current UIViewController instance.
+    open func add<V>(view: V, for controller: UIViewController)
+        where V: UIView, V: PaddingDialogViewType
+    {
+        controller.view?.populateSubview(with: view)
         
-        /// Add a PaddingDialogViewType instance as a subview to the main view.
-        ///
-        /// - Parameters:
-        ///   - view: A PaddingDialogViewType instance.
-        ///   - controller: The current UIViewController instance.
-        open func add<V>(view: V, for controller: UIViewController)
-            where V: UIView, V: PaddingDialogViewType
-        {
-            controller.view?.populateSubview(with: view)
-            
-            // When screen size changes, change constraints for this dialog
-            // view as well.
-            rxScreenOrientation
-                .doOnNext({[weak view] in
-                    view?.screenOrientationDidChange(to: $0)
-                })
-                .subscribe()
-                .addDisposableTo(disposeBag)
-        }
+        // When screen size changes, change constraints for this dialog
+        // view as well.
+        rxScreenOrientation
+            .doOnNext({[weak view] in
+                view?.screenOrientationDidChange(to: $0)
+            })
+            .subscribe()
+            .addDisposableTo(disposeBag)
+    }
+    
+    /// Add a RatioDialogViewType instance as a subview to the main view.
+    ///
+    /// - Parameters:
+    ///   - view: A RatioDialogViewType instance.
+    ///   - controller: The current UIViewController instance.
+    open func add<V>(view: V, for controller: UIViewController)
+        where V: UIView, V: RatioDialogViewType
+    {
+        controller.view?.populateSubview(with: view)
         
-        /// Add a RatioDialogViewType instance as a subview to the main view.
-        ///
-        /// - Parameters:
-        ///   - view: A RatioDialogViewType instance.
-        ///   - controller: The current UIViewController instance.
-        open func add<V>(view: V, for controller: UIViewController)
-            where V: UIView, V: RatioDialogViewType
-        {
-            controller.view?.populateSubview(with: view)
-            
-            // When screen size changes, change constraints for this dialog
-            // view as well.
-            rxScreenOrientation
-                .doOnNext({[weak view] in
-                    view?.screenOrientationDidChange(to: $0)
-                })
-                .subscribe()
-                .addDisposableTo(disposeBag)
-        }
+        // When screen size changes, change constraints for this dialog
+        // view as well.
+        rxScreenOrientation
+            .doOnNext({[weak view] in
+                view?.screenOrientationDidChange(to: $0)
+            })
+            .subscribe()
+            .addDisposableTo(disposeBag)
+    }
+    
+    /// Add a RatioPaddingDialogViewType instance as a subview to the main
+    /// view.
+    ///
+    /// - Parameters:
+    ///   - view: A RatioPaddingDialogViewType instance.
+    ///   - controller: The current UIViewController instance.
+    open func add<V>(view: V, for controller: UIViewController)
+        where V: UIView, V: RatioPaddingDialogViewType
+    {
+        controller.view?.populateSubview(with: view)
         
-        /// Add a RatioPaddingDialogViewType instance as a subview to the main
-        /// view.
-        ///
-        /// - Parameters:
-        ///   - view: A RatioPaddingDialogViewType instance.
-        ///   - controller: The current UIViewController instance.
-        open func add<V>(view: V, for controller: UIViewController)
-            where V: UIView, V: RatioPaddingDialogViewType
-        {
-            controller.view?.populateSubview(with: view)
-            
-            // When screen size changes, change constraints for this dialog
-            // view as well.
-            rxScreenOrientation
-                .doOnNext({[weak view] in
-                    view?.screenOrientationDidChange(to: $0)
-                })
-                .subscribe()
-                .addDisposableTo(disposeBag)
-        }
-        
-        /// Dismiss the currently displayed dialog.
-        ///
-        /// - Parameter dialog: The current dialog controller.
-        func dismiss(dialog: UIViewController?) {
-            dialog?.dismiss(animated: true, completion: nil)
-        }
+        // When screen size changes, change constraints for this dialog
+        // view as well.
+        rxScreenOrientation
+            .doOnNext({[weak view] in
+                view?.screenOrientationDidChange(to: $0)
+            })
+            .subscribe()
+            .addDisposableTo(disposeBag)
+    }
+    
+    /// Dismiss the currently displayed dialog.
+    ///
+    /// - Parameter dialog: The current dialog controller.
+    func dismiss(dialog: UIViewController?) {
+        dialog?.dismiss(animated: true, completion: nil)
     }
 }
 
 extension UIDialogController: DialogIdentifierType {}
-extension UIDialogController.DialogPresenter: DialogIdentifierType {}
-extension UIDialogController.DialogPresenter: DialogPresenterType {}
+extension DialogPresenter: DialogIdentifierType {}
+extension DialogPresenter: DialogPresenterType {}
 
 public extension UIDialogController {
     
