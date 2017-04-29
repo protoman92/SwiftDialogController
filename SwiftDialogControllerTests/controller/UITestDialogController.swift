@@ -12,29 +12,21 @@ import SwiftUtilitiesTests
 import UIKit
 @testable import SwiftDialogController
 
-class UITestDialogController: UIDialogController {
-    override var presenterInstance: ViewControllerPresenterType? {
-        return presenter
+class Presenter: UIDialogController.DialogPresenter {
+    let fake_dismiss = FakeDetails.builder().build()
+    
+    required init<P: UIDialogController>(view: P) {
+        super.init(view: view)
     }
     
-    lazy var presenter: Presenter = Presenter(view: self)
-    
-    public class Presenter: UIDialogController.DialogPresenter {
-        let fake_dismiss = FakeDetails.builder().build()
-        
-        init(view: UITestDialogController) {
-            super.init(view: view)
-        }
-        
-        override func dismiss(dialog: UIViewController?) {
-            fake_dismiss.onMethodCalled(withParameters: dialog)
-            super.dismiss(dialog: dialog)
-        }
+    override func dismiss(dialog: UIViewController?) {
+        fake_dismiss.onMethodCalled(withParameters: dialog)
+        super.dismiss(dialog: dialog)
     }
 }
 
 /// Superficial implementation to allow calls to viewWillTransition(to:with:).
-extension UITestDialogController.Presenter: UIViewControllerTransitionCoordinator {
+extension UIDialogController.DialogPresenter: UIViewControllerTransitionCoordinator {
     @available(iOS 8.0, *)
     public var targetTransform: CGAffineTransform {
         return CGAffineTransform()
@@ -46,64 +38,64 @@ extension UITestDialogController.Presenter: UIViewControllerTransitionCoordinato
     }
     
     @available(iOS 8.0, *)
-    func view(forKey key: UITransitionContextViewKey) -> UIView? {
+    public func view(forKey key: UITransitionContextViewKey) -> UIView? {
         return nil
     }
 
     @available(iOS 2.0, *)
-    func viewController(
+    public func viewController(
         forKey key: UITransitionContextViewControllerKey
     ) -> UIViewController? {
         return nil
     }
 
-    var completionCurve: UIViewAnimationCurve {
+    public var completionCurve: UIViewAnimationCurve {
         return .easeIn
     }
 
-    var completionVelocity: CGFloat {
+    public var completionVelocity: CGFloat {
         return 0
     }
 
-    var percentComplete: CGFloat {
+    public var percentComplete: CGFloat {
         return 0
     }
 
-    var transitionDuration: TimeInterval {
+    public var transitionDuration: TimeInterval {
         return 0
     }
 
-    var isCancelled: Bool {
+    public var isCancelled: Bool {
         return true
     }
 
-    var isInteractive: Bool {
+    public var isInteractive: Bool {
         return true
     }
 
-    var initiallyInteractive: Bool {
+    public var initiallyInteractive: Bool {
         return true
     }
 
-    var presentationStyle: UIModalPresentationStyle {
+    public var presentationStyle: UIModalPresentationStyle {
         return .overCurrentContext
     }
 
-    var isAnimated: Bool { return true }
+    public var isAnimated: Bool { return true }
     
     @available(iOS 10.0, *)
-    var isInterruptible: Bool {
+    public var isInterruptible: Bool {
         return true
     }
 
-    func animate(
+    public func animate(
         alongsideTransition animation: ((UIViewControllerTransitionCoordinatorContext) -> Void)?,
         completion: ((UIViewControllerTransitionCoordinatorContext) -> Void)? = nil
     ) -> Bool {
         return true
     }
     
-    func animateAlongsideTransition(
+    public func animateAlongsideTransition(
         in view: UIView?,
         animation: ((UIViewControllerTransitionCoordinatorContext) -> Void)?,
         completion: ((UIViewControllerTransitionCoordinatorContext) -> Void)? = nil
@@ -115,12 +107,12 @@ extension UITestDialogController.Presenter: UIViewControllerTransitionCoordinato
     introduced: 7.0,
     deprecated: 10.0,
     message: "Use notifyWhenInteractionChangesUsingBlock")
-    func notifyWhenInteractionEnds(
+    public func notifyWhenInteractionEnds(
         _ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Void
     ) {}
     
     @available(iOS 10.0, *)
-    func notifyWhenInteractionChanges(
+    public func notifyWhenInteractionChanges(
         _ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Void
     ) {}
 }

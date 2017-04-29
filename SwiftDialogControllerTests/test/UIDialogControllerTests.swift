@@ -22,8 +22,8 @@ class UIDialogControllerTests: XCTestCase {
     fileprivate let disposeBag = DisposeBag()
     fileprivate let tries = 1000
     fileprivate var scheduler: TestScheduler!
-    fileprivate var controller: UITestDialogController!
-    fileprivate var presenter: UITestDialogController.Presenter!
+    fileprivate var controller: UIDialogController!
+    fileprivate var presenter: Presenter!
     
     fileprivate let portraitSize = CGSize(width: 400, height: 700)
     fileprivate let landscapeSize = CGSize(width: 700, height: 400)
@@ -35,8 +35,9 @@ class UIDialogControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         scheduler = TestScheduler(initialClock: 0)
-        controller = UITestDialogController()
-        presenter = controller.presenter
+        controller = UIDialogController()
+        presenter = Presenter(view: controller)
+        controller.presenter = presenter
     }
     
     func test_pressButton_shouldDismissDialog() {

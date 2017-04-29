@@ -11,14 +11,27 @@ import SwiftUtilities
 import SwiftUIUtilities
 import UIKit
 
+/// Implement this protocol to provide presenter inrerface for dialogs.
+public protocol DialogPresenterType {
+    init(view: UIDialogController)
+}
+
 /// Dialogs are view controllers that can be presented on top of the current
 /// view controller, and usually floats over it.
 open class UIDialogController: UIBaseViewController {
+    override open var presenterInstance: ViewControllerPresenterType? {
+        return presenter
+    }
     
-    /// UIDialogController subclasses must provide their own Presenter
-    /// instances, or else this will throw an error.
-    var dialogPresenter: DialogPresenter? {
-        return presenterInstance as? DialogPresenter
+    /// UIDialogController subclasses can provide their own Presenter types
+    /// by overriding this variable. We initialize a presenter here because
+    /// this class itself is sufficient to be used for displaying dialogs, so
+    /// we don't expect to create subclasses for this purpose.
+    ///
+    /// In case we do use subclasses, cast the presenter here to the 
+    /// appropriate types.
+    open var dialogPresenterType: DialogPresenter.Type {
+        return DialogPresenter.self
     }
     
     var backgroundButton: UIButton? {
@@ -27,13 +40,15 @@ open class UIDialogController: UIBaseViewController {
         }).first as? UIButton
     }
     
+    public lazy var presenter: DialogPresenter = self.dialogPresenterType.init(view: self)
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         modalTransitionStyle = .crossDissolve
     }
     
     open class DialogPresenter: BaseViewControllerPresenter {
-        public override init<P: UIDialogController>(view: P) {
+        public override required init<P: UIDialogController>(view: P) {
             super.init(view: view)
         }
         
@@ -153,6 +168,7 @@ open class UIDialogController: UIBaseViewController {
 
 extension UIDialogController: DialogIdentifierType {}
 extension UIDialogController.DialogPresenter: DialogIdentifierType {}
+extension UIDialogController.DialogPresenter: DialogPresenterType {}
 
 public extension UIDialogController {
     
@@ -160,27 +176,27 @@ public extension UIDialogController {
     ///
     /// - Parameter view: A DialogViewType instance.
     public func add<V>(view: V) where V:UIView, V: DialogViewType & ViewBuilderType {
-        dialogPresenter?.add(view: view, for: self)
+        presenter.add(view: view, for: self)
     }
     
     /// Add a PaddingDialogViewType instance to the master view.
     ///
     /// - Parameter view: A PaddingDialogViewType instance.
     public func add<V>(view: V) where V: UIView, V: PaddingDialogViewType {
-        dialogPresenter?.add(view: view, for: self)
+        presenter.add(view: view, for: self)
     }
     
     /// Add a RatioDialogViewType instance to the master view.
     ///
     /// - Parameter view: A RatioDialogViewType instance.
     public func add<V>(view: V) where V: UIView, V: RatioDialogViewType {
-        dialogPresenter?.add(view: view, for: self)
+        presenter.add(view: view, for: self)
     }
     
     /// Add a RatioPaddingDialogViewType instance to the master view.
     ///
     /// - Parameter view: A RatioPaddingDialogViewType instance.
     public func add<V>(view: V) where V: UIView, V: RatioPaddingDialogViewType {
-        dialogPresenter?.add(view: view, for: self)
+        presenter.add(view: view, for: self)
     }
 }
