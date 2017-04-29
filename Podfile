@@ -6,12 +6,12 @@ target 'SwiftDialogController' do
   use_frameworks!
 
   # Pods for SwiftDialogController
-  pod 'SwiftUIUtilities'
+  pod 'SwiftBaseViews/Main'
 
   target 'SwiftDialogControllerTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'SwiftUIUtilitiesTests'
+    pod 'SwiftUIUtilitiesTests/Main'
     
   end
 

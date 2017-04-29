@@ -5,13 +5,13 @@ Pod::Spec.new do |s|
     s.name = "SwiftDialogController"
     s.summary = "UIViewController that can be presented on top of another UIViewController, with behaviors similar to Android's DialogFragment."
     s.requires_arc = true
-    s.version = "1.0.1"
+    s.version = "1.0.2"
     s.license = { :type => "Apache-2.0", :file => "LICENSE" }
     s.author = { "Hai Pham" => "swiften.svc@gmail.com" }
     s.homepage = "https://github.com/protoman92/SwiftDialogController.git"
     s.source = { :git => "https://github.com/protoman92/SwiftDialogController.git", :tag => "#{s.version}"}
     s.framework = "UIKit"
-    s.dependency 'SwiftUIUtilities/Main'
+    s.dependency 'SwiftBaseViews/Main'
 
     s.subspec 'Main' do |main|
         main.source_files = "SwiftDialogController/**/*.{swift}"

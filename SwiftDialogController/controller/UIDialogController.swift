@@ -7,6 +7,7 @@
 //
 
 import RxSwift
+import SwiftBaseViews
 import SwiftUtilities
 import SwiftUIUtilities
 import UIKit
