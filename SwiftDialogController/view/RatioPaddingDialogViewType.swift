@@ -83,9 +83,13 @@ public extension UIView {
     public func populateSubview<P>(with view: P)
         where P: UIView, P: RatioPaddingDialogViewType
     {
+        let closure: (UIView) -> [NSLayoutConstraint] = {[weak view] in
+            return view?.ratioPaddingConstraints(for: $0) ?? []
+        }
+        
         let component = ViewBuilderComponent.builder()
             .with(view: view)
-            .with(constraints: view.ratioPaddingConstraints(for: self))
+            .with(closure: closure)
             .build()
         
         self.populateSubviews(from: [component])
