@@ -100,19 +100,23 @@ public extension ShortSidePaddingIdentifierType {
     var shortSidePadding: CGFloat { get }
 }
 
-public extension LongSidePaddingDialogViewType where Self: UIView {
+public extension LongSidePaddingDialogViewType {
     
     /// Get an Array of NSLayoutConstraint for a parent/child view pair.
     ///
-    /// - Parameter parent: The parent UIView.
+    /// - Parameters:
+    ///   - parent: The parent UIView.
+    ///   - child: The child UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func longPaddingConstraints(for parent: UIView) -> [NSLayoutConstraint] {
+    public func longPaddingConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
         let constant = longSidePadding
         let orientation = self.orientation
         let firstAttribute = orientation.longSidePaddingFirstAttribute
         let secondAttribute = orientation.longSidePaddingSecondAttribute
         
-        let firstConstraint = NSLayoutConstraint(item: self,
+        let firstConstraint = NSLayoutConstraint(item: child,
                                                  attribute: firstAttribute,
                                                  relatedBy: .equal,
                                                  toItem: parent,
@@ -125,7 +129,7 @@ public extension LongSidePaddingDialogViewType where Self: UIView {
         let secondConstraint = NSLayoutConstraint(item: parent,
                                                   attribute: secondAttribute,
                                                   relatedBy: .equal,
-                                                  toItem: self,
+                                                  toItem: child,
                                                   attribute: secondAttribute,
                                                   multiplier: 1,
                                                   constant: constant)
@@ -136,19 +140,22 @@ public extension LongSidePaddingDialogViewType where Self: UIView {
     }
 }
 
-public extension ShortSidePaddingDialogViewType where Self: UIView {
+public extension ShortSidePaddingDialogViewType {
     
     /// Get an Array of NSLayoutConstraint for a parent/child view pair.
     ///
-    /// - Parameter parent: The parent UIView.
+    ///   - parent: The parent UIView.
+    ///   - child: The child UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func shortPaddingConstraints(for parent: UIView) -> [NSLayoutConstraint] {
+    public func shortPaddingConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
         let constant = shortSidePadding
         let orientation = self.orientation
         let firstAttribute = orientation.shortSidePaddingFirstAttribute
         let secondAttribute = orientation.shortSidePaddingSecondAttribute
         
-        let firstConstraint = NSLayoutConstraint(item: self,
+        let firstConstraint = NSLayoutConstraint(item: child,
                                                  attribute: firstAttribute,
                                                  relatedBy: .equal,
                                                  toItem: parent,
@@ -161,7 +168,7 @@ public extension ShortSidePaddingDialogViewType where Self: UIView {
         let secondConstraint = NSLayoutConstraint(item: parent,
                                                   attribute: secondAttribute,
                                                   relatedBy: .equal,
-                                                  toItem: self,
+                                                  toItem: child,
                                                   attribute: secondAttribute,
                                                   multiplier: 1,
                                                   constant: constant)
@@ -179,18 +186,24 @@ public extension ShortSidePaddingDialogViewType where Self: UIView {
     LongSidePaddingDialogViewType,
     ShortSidePaddingDialogViewType {}
 
-public extension PaddingDialogViewType where Self: UIView {
+public extension PaddingDialogViewType {
     
     /// Get all padding constraints.
     ///
-    /// - Parameter parent: The parent UIView.
+    ///   - parent: The parent UIView.
+    ///   - child: The child UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func paddingConstraints(for parent: UIView) -> [NSLayoutConstraint] {
-        let long = longPaddingConstraints(for: parent)
-        let short = shortPaddingConstraints(for: parent)
+    public func paddingConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        let long = longPaddingConstraints(for: parent, for: child)
+        let short = shortPaddingConstraints(for: parent, for: child)
         return long + short
     }
-    
+}
+
+public extension PaddingDialogViewType where Self: UIView {
+
     /// Change constraints on screen orientation changes.
     ///
     /// - Parameter orientation: The new screen orientation.
@@ -200,15 +213,15 @@ public extension PaddingDialogViewType where Self: UIView {
         }
         
         let allConstraints = superview.constraints
-        let paddingConstraints = self.paddingConstraints(for: superview)
-        let identifiers = paddingConstraints.flatMap({$0.identifier})
+        let newConstraints = paddingConstraints(for: superview, for: self)
+        let identifiers = newConstraints.flatMap({$0.identifier})
         
         let oldConstraints = identifiers.flatMap({identifier in
             allConstraints.filter({$0.identifier == identifier}).first
         })
         
         superview.removeConstraints(oldConstraints)
-        superview.addConstraints(paddingConstraints)
+        superview.addConstraints(newConstraints)
     }
 }
 
@@ -222,15 +235,7 @@ public extension UIView {
     public func populateSubview<P>(with view: P)
         where P: UIView, P: PaddingDialogViewType
     {
-        let closure: (UIView) -> [NSLayoutConstraint] = {[weak view] in
-            return view?.paddingConstraints(for: $0) ?? []
-        }
-        
-        let component = ViewBuilderComponent.builder()
-            .with(view: view)
-            .with(closure: closure)
-            .build()
-        
-        self.populateSubviews(from: [component])
+        let builder = PaddingDialogViewBuilder(view: view, dialog: view)
+        populateSubviews(with: builder)
     }
 }

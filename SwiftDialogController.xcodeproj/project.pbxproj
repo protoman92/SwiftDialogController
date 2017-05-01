@@ -21,6 +21,10 @@
 		D3696D1C1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D1B1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift */; };
 		D3696D1F1EB26F77007B7496 /* UIDialogControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D1E1EB26F77007B7496 /* UIDialogControllerTests.swift */; };
 		D3696D221EB27041007B7496 /* UITestDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3696D211EB27041007B7496 /* UITestDialogController.swift */; };
+		D3D245B61EB7300E006BD34F /* DialogViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245B51EB7300E006BD34F /* DialogViewBuilder.swift */; };
+		D3D245B81EB732D6006BD34F /* PaddingDialogViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245B71EB732D6006BD34F /* PaddingDialogViewBuilder.swift */; };
+		D3D245BA1EB73927006BD34F /* RatioDialogViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245B91EB73927006BD34F /* RatioDialogViewBuilder.swift */; };
+		D3D245BC1EB73968006BD34F /* RatioPaddingDialogViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245BB1EB73968006BD34F /* RatioPaddingDialogViewBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +58,10 @@
 		D3696D1B1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatioPaddingDialogViewType.swift; sourceTree = "<group>"; };
 		D3696D1E1EB26F77007B7496 /* UIDialogControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIDialogControllerTests.swift; path = test/UIDialogControllerTests.swift; sourceTree = "<group>"; };
 		D3696D211EB27041007B7496 /* UITestDialogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITestDialogController.swift; path = controller/UITestDialogController.swift; sourceTree = "<group>"; };
+		D3D245B51EB7300E006BD34F /* DialogViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DialogViewBuilder.swift; path = builder/DialogViewBuilder.swift; sourceTree = "<group>"; };
+		D3D245B71EB732D6006BD34F /* PaddingDialogViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaddingDialogViewBuilder.swift; path = builder/PaddingDialogViewBuilder.swift; sourceTree = "<group>"; };
+		D3D245B91EB73927006BD34F /* RatioDialogViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RatioDialogViewBuilder.swift; path = builder/RatioDialogViewBuilder.swift; sourceTree = "<group>"; };
+		D3D245BB1EB73968006BD34F /* RatioPaddingDialogViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RatioPaddingDialogViewBuilder.swift; path = builder/RatioPaddingDialogViewBuilder.swift; sourceTree = "<group>"; };
 		D6D2B77A9377C061664E9C73 /* Pods-SwiftDialogControllerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDialogControllerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDialogControllerTests/Pods-SwiftDialogControllerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,6 +110,7 @@
 		D3696CF31EB21C22007B7496 /* SwiftDialogController */ = {
 			isa = PBXGroup;
 			children = (
+				D3D245B41EB72FF4006BD34F /* builder */,
 				D3696D0B1EB2245C007B7496 /* controller */,
 				D3696D0E1EB2245C007B7496 /* view */,
 				D3696CF41EB21C22007B7496 /* SwiftDialogController.h */,
@@ -163,6 +172,17 @@
 				D3696D211EB27041007B7496 /* UITestDialogController.swift */,
 			);
 			name = controller;
+			sourceTree = "<group>";
+		};
+		D3D245B41EB72FF4006BD34F /* builder */ = {
+			isa = PBXGroup;
+			children = (
+				D3D245B51EB7300E006BD34F /* DialogViewBuilder.swift */,
+				D3D245B71EB732D6006BD34F /* PaddingDialogViewBuilder.swift */,
+				D3D245B91EB73927006BD34F /* RatioDialogViewBuilder.swift */,
+				D3D245BB1EB73968006BD34F /* RatioPaddingDialogViewBuilder.swift */,
+			);
+			name = builder;
 			sourceTree = "<group>";
 		};
 		F1D36DB0CEBCD01AC6043C4E /* Pods */ = {
@@ -382,11 +402,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3D245B61EB7300E006BD34F /* DialogViewBuilder.swift in Sources */,
+				D3D245BA1EB73927006BD34F /* RatioDialogViewBuilder.swift in Sources */,
 				D3696D131EB2245C007B7496 /* DialogViewType.swift in Sources */,
+				D3D245B81EB732D6006BD34F /* PaddingDialogViewBuilder.swift in Sources */,
 				D3696D111EB2245C007B7496 /* DialogIdentifierType.swift in Sources */,
 				D3696D141EB2245C007B7496 /* PaddingDialogViewType.swift in Sources */,
 				D3696D1A1EB260B7007B7496 /* RatioDialogViewType.swift in Sources */,
 				D3696D1C1EB26C1D007B7496 /* RatioPaddingDialogViewType.swift in Sources */,
+				D3D245BC1EB73968006BD34F /* RatioPaddingDialogViewBuilder.swift in Sources */,
 				D3696D121EB2245C007B7496 /* UIDialogController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

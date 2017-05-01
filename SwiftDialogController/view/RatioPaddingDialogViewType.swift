@@ -16,21 +16,24 @@ public protocol RatioPaddingDialogViewType:
     LongSideRatioDialogViewType,
     ShortSidePaddingDialogViewType {}
 
-public extension RatioPaddingDialogViewType where Self: UIView {
+public extension RatioPaddingDialogViewType {
     
     /// Get all ratio padding constraints. We add centerX and centerY
     /// constraints as well to place this view in the middle of the parent
     /// view.
     ///
-    /// - Parameter parent: The parent UIView.
+    ///   - parent: The parent UIView.
+    ///   - child: The child UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func ratioPaddingConstraints(for parent: UIView) -> [NSLayoutConstraint] {
-        let long = longRatioConstraints(for: parent)
-        let short = shortPaddingConstraints(for: parent)
+    public func ratioPaddingConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        let long = longRatioConstraints(for: parent, for: child)
+        let short = shortPaddingConstraints(for: parent, for: child)
         var constraints = long + short
         
         constraints.append(
-            NSLayoutConstraint(item: self,
+            NSLayoutConstraint(item: child,
                                attribute: .centerX,
                                relatedBy: .equal,
                                toItem: parent,
@@ -40,7 +43,7 @@ public extension RatioPaddingDialogViewType where Self: UIView {
         )
         
         constraints.append(
-            NSLayoutConstraint(item: self,
+            NSLayoutConstraint(item: child,
                                attribute: .centerY,
                                relatedBy: .equal,
                                toItem: parent,
@@ -51,7 +54,10 @@ public extension RatioPaddingDialogViewType where Self: UIView {
         
         return constraints
     }
-    
+}
+
+public extension RatioPaddingDialogViewType where Self: UIView {
+
     /// Change constraints on screen orientation changes.
     ///
     /// - Parameter orientation: The new screen orientation.
@@ -61,15 +67,15 @@ public extension RatioPaddingDialogViewType where Self: UIView {
         }
         
         let allConstraints = superview.constraints
-        let rpConstraints = self.ratioPaddingConstraints(for: superview)
-        let identifiers = rpConstraints.flatMap({$0.identifier})
+        let newConstraints = ratioPaddingConstraints(for: superview, for: self)
+        let identifiers = newConstraints.flatMap({$0.identifier})
         
         let oldConstraints = identifiers.flatMap({identifier in
             allConstraints.filter({$0.identifier == identifier}).first
         })
         
         superview.removeConstraints(oldConstraints)
-        superview.addConstraints(rpConstraints)
+        superview.addConstraints(newConstraints)
     }
 }
 
@@ -83,15 +89,7 @@ public extension UIView {
     public func populateSubview<P>(with view: P)
         where P: UIView, P: RatioPaddingDialogViewType
     {
-        let closure: (UIView) -> [NSLayoutConstraint] = {[weak view] in
-            return view?.ratioPaddingConstraints(for: $0) ?? []
-        }
-        
-        let component = ViewBuilderComponent.builder()
-            .with(view: view)
-            .with(closure: closure)
-            .build()
-        
-        self.populateSubviews(from: [component])
+        let builder = RatioPaddingDialogViewBuilder(view: view, dialog: view)
+        populateSubviews(with: builder)
     }
 }

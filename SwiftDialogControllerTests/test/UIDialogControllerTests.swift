@@ -34,6 +34,7 @@ class UIDialogControllerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        continueAfterFailure = false
         scheduler = TestScheduler(initialClock: 0)
         controller = UIDialogController()
         presenter = Presenter(view: controller)

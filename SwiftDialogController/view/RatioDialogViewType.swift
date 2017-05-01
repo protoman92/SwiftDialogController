@@ -75,19 +75,22 @@ public extension ShortSideRatioIdentifierType {
     var shortSideRatio: CGFloat { get }
 }
 
-public extension LongSideRatioDialogViewType where Self: UIView {
+public extension LongSideRatioDialogViewType {
     
     /// Get an Array of NSLayoutConstraint for a parent/child view pair.
     ///
-    /// - Parameter parent: The parent UIView.
+    ///   - parent: The parent UIView.
+    ///   - child: The child UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func longRatioConstraints(for parent: UIView) -> [NSLayoutConstraint] {
+    public func longRatioConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
         let longSideRatio = self.longSideRatio
         let multiplier = longSideRatio > 0 ? longSideRatio : 1
         let orientation = self.orientation
         let attribute = orientation.longSideRatioAttribute
         
-        let constraint = NSLayoutConstraint(item: self,
+        let constraint = NSLayoutConstraint(item: child,
                                             attribute: attribute,
                                             relatedBy: .equal,
                                             toItem: parent,
@@ -101,19 +104,22 @@ public extension LongSideRatioDialogViewType where Self: UIView {
     }
 }
 
-public extension ShortSideRatioDialogViewType where Self: UIView {
+public extension ShortSideRatioDialogViewType {
     
     /// Get an Array of NSLayoutConstraint for a parent/child view pair.
     ///
-    /// - Parameter parent: The parent UIView.
+    ///   - parent: The parent UIView.
+    ///   - child: The child UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func shortRatioConstraints(for parent: UIView) -> [NSLayoutConstraint] {
+    public func shortRatioConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
         let shortSideRatio = self.shortSideRatio
         let multiplier = shortSideRatio > 0 ? shortSideRatio : 1
         let orientation = self.orientation
         let attribute = orientation.shortSideRatioAttribute
         
-        let constraint = NSLayoutConstraint(item: self,
+        let constraint = NSLayoutConstraint(item: child,
                                             attribute: attribute,
                                             relatedBy: .equal,
                                             toItem: parent,
@@ -132,20 +138,23 @@ public extension ShortSideRatioDialogViewType where Self: UIView {
     LongSideRatioDialogViewType,
     ShortSideRatioDialogViewType {}
 
-public extension RatioDialogViewType where Self: UIView {
+public extension RatioDialogViewType {
     
     /// Get all ratio constraints. We add a centerX and centerY constraints
     /// to place this view directly in the middle of the parent UIView.
     ///
-    /// - Parameter parent: The parent UIView.
+    ///   - parent: The parent UIView.
+    ///   - child: The child UIView.
     /// - Returns: An Array of NSLayoutConstraint.
-    public func ratioConstraints(for parent: UIView) -> [NSLayoutConstraint] {
-        let long = longRatioConstraints(for: parent)
-        let short = shortRatioConstraints(for: parent)
+    public func ratioConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        let long = longRatioConstraints(for: parent, for: child)
+        let short = shortRatioConstraints(for: parent, for: child)
         var constraints = long + short
         
         constraints.append(
-            NSLayoutConstraint(item: self,
+            NSLayoutConstraint(item: child,
                                attribute: .centerX,
                                relatedBy: .equal,
                                toItem: parent,
@@ -155,7 +164,7 @@ public extension RatioDialogViewType where Self: UIView {
         )
         
         constraints.append(
-            NSLayoutConstraint(item: self,
+            NSLayoutConstraint(item: child,
                                attribute: .centerY,
                                relatedBy: .equal,
                                toItem: parent,
@@ -166,7 +175,10 @@ public extension RatioDialogViewType where Self: UIView {
         
         return constraints
     }
-    
+}
+
+public extension RatioDialogViewType where Self: UIView {
+
     /// Change constraints on screen orientation changes.
     ///
     /// - Parameter orientation: The new screen orientation.
@@ -176,15 +188,15 @@ public extension RatioDialogViewType where Self: UIView {
         }
         
         let allConstraints = superview.constraints
-        let ratioConstraints = self.ratioConstraints(for: superview)
-        let identifiers = ratioConstraints.flatMap({$0.identifier})
+        let newConstraints = ratioConstraints(for: superview, for: self)
+        let identifiers = newConstraints.flatMap({$0.identifier})
         
         let oldConstraints = identifiers.flatMap({identifier in
             allConstraints.filter({$0.identifier == identifier}).first
         })
         
         superview.removeConstraints(oldConstraints)
-        superview.addConstraints(ratioConstraints)
+        superview.addConstraints(newConstraints)
     }
 }
 
@@ -198,15 +210,7 @@ public extension UIView {
     public func populateSubview<P>(with view: P)
         where P: UIView, P: RatioDialogViewType
     {
-        let closure: (UIView) -> [NSLayoutConstraint] = {[weak view] in
-            return view?.ratioConstraints(for: $0) ?? []
-        }
-        
-        let component = ViewBuilderComponent.builder()
-            .with(view: view)
-            .with(closure: closure)
-            .build()
-        
-        self.populateSubviews(from: [component])
+        let builder = RatioDialogViewBuilder(view: view, dialog: view)
+        populateSubviews(with: builder)
     }
 }
