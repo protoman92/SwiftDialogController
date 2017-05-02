@@ -45,7 +45,7 @@ open class DialogViewBuilder {
     /// - Parameter view: The parent UIView instance.
     /// - Returns: An Array of NSLayoutConstraint.
     open func constraints(for view: UIView) -> [NSLayoutConstraint] {
-        return []
+        return dialog.dialogConstraints(for: view, for: dialogView)
     }
     
     // MARK: ViewBuilderConfigType.

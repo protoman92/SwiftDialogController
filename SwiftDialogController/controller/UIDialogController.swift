@@ -93,24 +93,13 @@ open class DialogPresenter: BaseViewControllerPresenter {
     ///   - view: A DialogViewType instance.
     ///   - controller: The current UIViewController instance.
     open func add<V>(view: V, for controller: UIViewController)
-        where V: UIView, V: DialogViewType & ViewBuilderType
-    {
-        controller.view?.populateSubviews(with: view)
-    }
-    
-    /// Add a PaddingDialogViewType instance as a subview to the main view.
-    ///
-    /// - Parameters:
-    ///   - view: A PaddingDialogViewType instance.
-    ///   - controller: The current UIViewController instance.
-    open func add<V>(view: V, for controller: UIViewController)
-        where V: UIView, V: PaddingDialogViewType
+        where V: UIView, V: DialogViewType
     {
         controller.view?.populateSubview(with: view)
         
         // When screen size changes, change constraints for this dialog
         // view as well.
-        rxScreenOrientation
+        rxScreenOrientation 
             .doOnNext({[weak view] in
                 view?.screenOrientationDidChange(to: $0)
             })
@@ -118,47 +107,8 @@ open class DialogPresenter: BaseViewControllerPresenter {
             .addDisposableTo(disposeBag)
     }
     
-    /// Add a RatioDialogViewType instance as a subview to the main view.
-    ///
-    /// - Parameters:
-    ///   - view: A RatioDialogViewType instance.
-    ///   - controller: The current UIViewController instance.
-    open func add<V>(view: V, for controller: UIViewController)
-        where V: UIView, V: RatioDialogViewType
-    {
-        controller.view?.populateSubview(with: view)
-        
-        // When screen size changes, change constraints for this dialog
-        // view as well.
-        rxScreenOrientation
-            .doOnNext({[weak view] in
-                view?.screenOrientationDidChange(to: $0)
-            })
-            .subscribe()
-            .addDisposableTo(disposeBag)
-    }
-    
-    /// Add a RatioPaddingDialogViewType instance as a subview to the main
-    /// view.
-    ///
-    /// - Parameters:
-    ///   - view: A RatioPaddingDialogViewType instance.
-    ///   - controller: The current UIViewController instance.
-    open func add<V>(view: V, for controller: UIViewController)
-        where V: UIView, V: RatioPaddingDialogViewType
-    {
-        controller.view?.populateSubview(with: view)
-        
-        // When screen size changes, change constraints for this dialog
-        // view as well.
-        rxScreenOrientation
-            .doOnNext({[weak view] in
-                view?.screenOrientationDidChange(to: $0)
-            })
-            .subscribe()
-            .addDisposableTo(disposeBag)
-    }
-    
+    open func add(view: DialogViewType) {}
+
     /// Dismiss the currently displayed dialog.
     ///
     /// - Parameter dialog: The current dialog controller.
@@ -176,28 +126,7 @@ public extension UIDialogController {
     /// Add a DialogViewType instance to the master view.
     ///
     /// - Parameter view: A DialogViewType instance.
-    public func add<V>(view: V) where V:UIView, V: DialogViewType & ViewBuilderType {
-        presenter.add(view: view, for: self)
-    }
-    
-    /// Add a PaddingDialogViewType instance to the master view.
-    ///
-    /// - Parameter view: A PaddingDialogViewType instance.
-    public func add<V>(view: V) where V: UIView, V: PaddingDialogViewType {
-        presenter.add(view: view, for: self)
-    }
-    
-    /// Add a RatioDialogViewType instance to the master view.
-    ///
-    /// - Parameter view: A RatioDialogViewType instance.
-    public func add<V>(view: V) where V: UIView, V: RatioDialogViewType {
-        presenter.add(view: view, for: self)
-    }
-    
-    /// Add a RatioPaddingDialogViewType instance to the master view.
-    ///
-    /// - Parameter view: A RatioPaddingDialogViewType instance.
-    public func add<V>(view: V) where V: UIView, V: RatioPaddingDialogViewType {
+    public func add<V>(view: V) where V:UIView, V: DialogViewType {
         presenter.add(view: view, for: self)
     }
 }

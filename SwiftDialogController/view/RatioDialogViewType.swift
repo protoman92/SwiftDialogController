@@ -12,7 +12,7 @@ import UIKit
 public extension BasicOrientation {
     
     /// Get the long side's attribute to be used for creating layout 
-    /// constraints for padding constraints.
+    /// constraints for ratio constraints.
     public var longSideRatioAttribute: NSLayoutAttribute {
         switch self {
         case .landscape: return .width
@@ -21,7 +21,7 @@ public extension BasicOrientation {
     }
     
     /// Get the short side's attribute to be used for creating layout
-    /// constraints for padding constraints.
+    /// constraints for ratio constraints.
     public var shortSideRatioAttribute: NSLayoutAttribute {
         return oppositeOrientation.longSideRatioAttribute
     }
@@ -45,7 +45,7 @@ public extension ShortSideRatioIdentifierType {
     
     /// Identifier for short-side attribute constraint.
     public var shortSideRatioAttribute: String {
-        return "shortSideRatioFirstAttribute"
+        return "shortSideRatioAttribute"
     }
 }
 
@@ -151,66 +151,7 @@ public extension RatioDialogViewType {
     {
         let long = longRatioConstraints(for: parent, for: child)
         let short = shortRatioConstraints(for: parent, for: child)
-        var constraints = long + short
-        
-        constraints.append(
-            NSLayoutConstraint(item: child,
-                               attribute: .centerX,
-                               relatedBy: .equal,
-                               toItem: parent,
-                               attribute: .centerX,
-                               multiplier: 1,
-                               constant: 0)
-        )
-        
-        constraints.append(
-            NSLayoutConstraint(item: child,
-                               attribute: .centerY,
-                               relatedBy: .equal,
-                               toItem: parent,
-                               attribute: .centerY,
-                               multiplier: 1,
-                               constant: 0)
-        )
-        
-        return constraints
-    }
-}
-
-public extension RatioDialogViewType where Self: UIView {
-
-    /// Change constraints on screen orientation changes.
-    ///
-    /// - Parameter orientation: The new screen orientation.
-    public func screenOrientationDidChange(to orientation: BasicOrientation) {
-        guard let superview = self.superview else {
-            return
-        }
-        
-        let allConstraints = superview.constraints
-        let newConstraints = ratioConstraints(for: superview, for: self)
-        let identifiers = newConstraints.flatMap({$0.identifier})
-        
-        let oldConstraints = identifiers.flatMap({identifier in
-            allConstraints.filter({$0.identifier == identifier}).first
-        })
-        
-        superview.removeConstraints(oldConstraints)
-        superview.addConstraints(newConstraints)
-    }
-}
-
-public extension UIView {
-    
-    /// Convenient method to add a DialogViewType to another view, since
-    /// we cannot extend RatioDialogViewType to automatically implement
-    /// builderComponents(for:).
-    ///
-    /// - Parameter view: A RatioDialogViewType instance.
-    public func populateSubview<P>(with view: P)
-        where P: UIView, P: RatioDialogViewType
-    {
-        let builder = RatioDialogViewBuilder(view: view, dialog: view)
-        populateSubviews(with: builder)
+        let center = centerConstraints(for: parent, for: child)
+        return long + short + center
     }
 }

@@ -176,26 +176,18 @@ class UIDialogControllerTests: XCTestCase {
                 
                 switch presenter.orientation {
                 case .landscape:
-                    XCTAssertEqual(
-                        floor(width!.multiplier),
-                        floor(dialogView.longSideRatio)
-                    )
+                    XCTAssertEqual(floor(width!.multiplier),
+                                   floor(dialogView.longSideRatio))
                     
-                    XCTAssertEqual(
-                        floor(height!.multiplier),
-                        floor(dialogView.shortSideRatio)
-                    )
+                    XCTAssertEqual(floor(height!.multiplier),
+                                   floor(dialogView.shortSideRatio))
                     
                 case .portrait:
-                    XCTAssertEqual(
-                        floor(width!.multiplier),
-                        floor(dialogView.shortSideRatio)
-                    )
+                    XCTAssertEqual(floor(width!.multiplier),
+                                   floor(dialogView.shortSideRatio))
                     
-                    XCTAssertEqual(
-                        floor(height!.multiplier),
-                        floor(dialogView.longSideRatio)
-                    )
+                    XCTAssertEqual(floor(height!.multiplier),
+                                   floor(dialogView.longSideRatio))
                 }
             }
             
@@ -294,10 +286,212 @@ class UIDialogControllerTests: XCTestCase {
                     XCTAssertEqual(left!.constant, dialogView.shortSidePadding)
                     XCTAssertEqual(right!.constant, dialogView.shortSidePadding)
                     
+                    XCTAssertEqual(floor(height!.multiplier),
+                                   floor(dialogView.longSideRatio))
+                }
+            }
+            
+            // When: Fake orientation change.
+            controller.viewWillTransition(to: portraitSize, with: presenter)
+            controller.add(view: dialogView)
+            
+            // Then: Test that initial build succeeds.
+            testConstraints()
+            
+            // When: Fake orientation change.
+            controller.viewWillTransition(to: landscapeSize, with: presenter)
+            
+            // Then: Test that view constraints are updated accordingly.
+            testConstraints()
+            
+            dialogView.removeFromSuperview()
+        }
+    }
+    
+    func test_addPaddingConstantDialogView_shouldWork() {
+        // Setup
+        let controller = self.controller!
+        let presenter = self.presenter!
+        
+        for _ in 0..<tries {
+            // Setup: Separate the tests in order to call them multiple times.
+            let dialogView = UIPaddingConstantDialogView(
+                withDetector: presenter,
+                withLongSideConstant: CGFloat(Int.random(100, 600)),
+                withShortSidePadding: CGFloat(Int.random(0, 100))
+            )
+            
+            let testConstraints: () -> Void = {
+                let width = dialogView.constraints.filter({
+                    $0.firstAttribute == .width &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let height = dialogView.constraints.filter({
+                    $0.firstAttribute == .height &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let top = controller.view.constraints.filter({
+                    $0.firstAttribute == .top &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let left = controller.view.constraints.filter({
+                    $0.firstAttribute == .left &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let right = controller.view.constraints.filter({
+                    $0.firstAttribute == .right &&
+                    $0.secondItem as? UIView == dialogView
+                }).first
+                
+                let bottom = controller.view.constraints.filter({
+                    $0.firstAttribute == .bottom &&
+                    $0.secondItem as? UIView == dialogView
+                }).first
+                
+                let centerX = controller.view.constraints.filter({
+                    $0.firstAttribute == .centerX &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let centerY = controller.view.constraints.filter({
+                    $0.firstAttribute == .centerX &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                XCTAssertNotNil(centerX)
+                XCTAssertNotNil(centerY)
+                XCTAssertEqual(centerX!.constant, 0)
+                XCTAssertEqual(centerY!.constant, 0)
+                
+                switch presenter.orientation {
+                case .landscape:
+                    XCTAssertNotNil(top)
+                    XCTAssertNotNil(bottom)
+                    XCTAssertNotNil(width)
+                    XCTAssertEqual(top!.constant, dialogView.shortSidePadding)
+                    XCTAssertEqual(bottom!.constant, dialogView.shortSidePadding)
+                    
+                    XCTAssertEqual(floor(width!.constant),
+                                   floor(dialogView.longSideConstant))
+                    
+                    XCTAssertNil(width!.secondItem)
+                    XCTAssertEqual(width!.secondAttribute, .notAnAttribute)
+                    
+                case .portrait:
+                    XCTAssertNotNil(left)
+                    XCTAssertNotNil(right)
+                    XCTAssertNotNil(height)
+                    XCTAssertEqual(left!.constant, dialogView.shortSidePadding)
+                    XCTAssertEqual(right!.constant, dialogView.shortSidePadding)
+                    
+                    XCTAssertEqual(floor(height!.constant),
+                                   floor(dialogView.longSideConstant))
+                    
+                    XCTAssertNil(height!.secondItem)
+                    XCTAssertEqual(height!.secondAttribute, .notAnAttribute)
+                }
+            }
+            
+            // When: Fake orientation change.
+            controller.viewWillTransition(to: portraitSize, with: presenter)
+            controller.add(view: dialogView)
+            
+            // Then: Test that initial build succeeds.
+            testConstraints()
+            
+            // When: Fake orientation change.
+            controller.viewWillTransition(to: landscapeSize, with: presenter)
+            
+            // Then: Test that view constraints are updated accordingly.
+            testConstraints()
+            
+            dialogView.removeFromSuperview()
+        }
+    }
+    
+    func test_addRatioConstantDialogView_shouldWork() {
+        // Setup
+        let controller = self.controller!
+        let presenter = self.presenter!
+        
+        for _ in 0..<tries {
+            // Setup: Separate the tests in order to call them multiple times.
+            let dialogView = UIRatioConstantDialogView(
+                withDetector: presenter,
+                withLongSideConstant: CGFloat(Int.random(100, 600)),
+                withShortSideRatio: CGFloat(Int.random(1, 9)) / 10
+            )
+            
+            let testConstraints: () -> Void = {
+                let directWidth = dialogView.constraints.filter({
+                    $0.firstAttribute == .width &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let directHeight = dialogView.constraints.filter({
+                    $0.firstAttribute == .height &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let ratioWidth = controller.view.constraints.filter({
+                    $0.firstAttribute == .width &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let ratioHeight = controller.view.constraints.filter({
+                    $0.firstAttribute == .height &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let centerX = controller.view.constraints.filter({
+                    $0.firstAttribute == .centerX &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                let centerY = controller.view.constraints.filter({
+                    $0.firstAttribute == .centerX &&
+                    $0.firstItem as? UIView == dialogView
+                }).first
+                
+                XCTAssertNotNil(centerX)
+                XCTAssertNotNil(centerY)
+                XCTAssertEqual(centerX!.constant, 0)
+                XCTAssertEqual(centerY!.constant, 0)
+                
+                switch presenter.orientation {
+                case .landscape:
+                    XCTAssertNotNil(directWidth)
+                    XCTAssertNotNil(ratioHeight)
+                    
                     XCTAssertEqual(
-                        floor(height!.multiplier),
-                        floor(dialogView.longSideRatio)
+                        floor(directWidth!.constant),
+                        floor(dialogView.longSideConstant)
                     )
+                    
+                    XCTAssertNil(directWidth!.secondItem)
+                    XCTAssertEqual(directWidth!.secondAttribute, .notAnAttribute)
+                    
+                    XCTAssertEqual(floor(ratioHeight!.multiplier),
+                                   floor(dialogView.shortSideRatio))
+                    
+                case .portrait:
+                    XCTAssertNotNil(directHeight)
+                    XCTAssertNotNil(ratioWidth)
+                    
+                    XCTAssertEqual(
+                        floor(directHeight!.constant),
+                        floor(dialogView.longSideConstant)
+                    )
+                    
+                    XCTAssertNil(directHeight!.secondItem)
+                    XCTAssertEqual(directHeight!.secondAttribute, .notAnAttribute)
+                    
+                    XCTAssertEqual(floor(ratioWidth!.multiplier),
+                                   floor(dialogView.shortSideRatio))
                 }
             }
             

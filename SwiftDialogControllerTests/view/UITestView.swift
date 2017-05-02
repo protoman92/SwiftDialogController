@@ -20,6 +20,12 @@ class UIBaseDialogView: UIView {
     }
     
     required public init?(coder aDecoder: NSCoder) { fatalError() }
+    
+    func dialogConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        return []
+    }
 }
 
 class UIPaddingDialogView: UIBaseDialogView {
@@ -32,6 +38,12 @@ class UIPaddingDialogView: UIBaseDialogView {
         self.init(withDetector: detector)
         self.longSidePadding = longSidePadding
         self.shortSidePadding = shortSidePadding
+    }
+    
+    override func dialogConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        return paddingConstraints(for: parent, for: child)
     }
 }
 
@@ -46,6 +58,12 @@ class UIRatioDialogView: UIBaseDialogView {
         self.longSideRatio = longSideRatio
         self.shortSideRatio = shortSideRatio
     }
+    
+    override func dialogConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        return ratioConstraints(for: parent, for: child)
+    }
 }
 
 class UIRatioPaddingDialogView: UIBaseDialogView {
@@ -59,9 +77,55 @@ class UIRatioPaddingDialogView: UIBaseDialogView {
         self.longSideRatio = longSideRatio
         self.shortSidePadding = shortSidePadding
     }
+    
+    override func dialogConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        return ratioPaddingConstraints(for: parent, for: child)
+    }
+}
+
+class UIPaddingConstantDialogView: UIBaseDialogView {
+    var shortSidePadding: CGFloat = 10
+    var longSideConstant: CGFloat = 100
+    
+    convenience init(withDetector detector: OrientationDetectorType,
+                     withLongSideConstant longSideConstant: CGFloat,
+                     withShortSidePadding shortSidePadding: CGFloat) {
+        self.init(withDetector: detector)
+        self.longSideConstant = longSideConstant
+        self.shortSidePadding = shortSidePadding
+    }
+    
+    override func dialogConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        return paddingConstantConstraints(for: parent, for: child)
+    }
+}
+
+class UIRatioConstantDialogView: UIBaseDialogView {
+    var shortSideRatio: CGFloat = 1 / 2
+    var longSideConstant: CGFloat = 100
+    
+    convenience init(withDetector detector: OrientationDetectorType,
+                     withLongSideConstant longSideConstant: CGFloat,
+                     withShortSideRatio shortSideRatio: CGFloat) {
+        self.init(withDetector: detector)
+        self.longSideConstant = longSideConstant
+        self.shortSideRatio = shortSideRatio
+    }
+    
+    override func dialogConstraints(for parent: UIView, for child: UIView)
+        -> [NSLayoutConstraint]
+    {
+        return ratioConstantConstraints(for: parent, for: child)
+    }
 }
 
 extension UIBaseDialogView: DialogViewType {}
 extension UIPaddingDialogView: PaddingDialogViewType {}
 extension UIRatioDialogView: RatioDialogViewType {}
 extension UIRatioPaddingDialogView: RatioPaddingDialogViewType {}
+extension UIPaddingConstantDialogView: PaddingConstantDialogViewType {}
+extension UIRatioConstantDialogView: RatioConstantDialogViewType {}
