@@ -109,16 +109,3 @@ public extension DialogViewType where Self: UIView {
         addConstraints(newConstraints.filter({$0.isDirectConstraint}))
     }
 }
-
-extension UIView {
-    
-    /// Convenient method to add a DialogViewType to another view, since
-    /// we cannot extend DialogViewType to automatically implement
-    /// builderComponents(for:).
-    ///
-    /// - Parameter view: A DialogViewType instance.
-    public func populateSubview<P>(with view: P) where P: UIView, P: DialogViewType {
-        let builder = DialogViewBuilder(view: view, dialog: view)
-        populateSubviews(with: builder)
-    }
-}

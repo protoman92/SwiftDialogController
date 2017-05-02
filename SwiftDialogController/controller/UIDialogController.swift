@@ -95,7 +95,8 @@ open class DialogPresenter: BaseViewControllerPresenter {
     open func add<V>(view: V, for controller: UIViewController)
         where V: UIView, V: DialogViewType
     {
-        controller.view?.populateSubview(with: view)
+        let builder = DialogViewBuilder(view: view, dialog: view)
+        controller.view?.populateSubviews(with: builder)
         
         // When screen size changes, change constraints for this dialog
         // view as well.

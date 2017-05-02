@@ -11,6 +11,7 @@ target 'SwiftDialogController' do
   target 'SwiftDialogControllerTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'SwiftUtilitiesTests/Main'
     pod 'SwiftUIUtilitiesTests/Main'
     
   end
