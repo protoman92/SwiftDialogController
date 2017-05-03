@@ -131,3 +131,22 @@ public extension UIDialogController {
         presenter.add(view: view, for: self)
     }
 }
+
+public extension ControllerPresentableType {
+    
+    /// Present a UIDialogController subclass instance.
+    ///
+    /// - Parameters:
+    ///   - dialog: A UIDialogController instance.
+    ///   - animated: A Bool value.
+    ///   - completion: Completion closure.
+    public func present<D>(dialog: D, animated: Bool, completion: (() -> Void)?)
+        where D: UIDialogController
+    {
+        // We need to set these values in order for the dialog to have a
+        // transparent background.
+        dialog.modalPresentationStyle = .overFullScreen
+        dialog.modalTransitionStyle = .crossDissolve
+        present(dialog, animated: animated, completion: completion)
+    }
+}

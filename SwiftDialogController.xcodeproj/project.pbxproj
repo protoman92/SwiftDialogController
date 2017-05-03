@@ -25,7 +25,6 @@
 		D3D245B61EB7300E006BD34F /* DialogViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245B51EB7300E006BD34F /* DialogViewBuilder.swift */; };
 		D3D245C51EB7A09D006BD34F /* ConstantDialogViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245C41EB7A09D006BD34F /* ConstantDialogViewType.swift */; };
 		D3D245C71EB7A33B006BD34F /* PaddingConstantDialogViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245C61EB7A33B006BD34F /* PaddingConstantDialogViewType.swift */; };
-		D3D245CE1EB7B5D7006BD34F /* DialogPresentableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D245CD1EB7B5D7006BD34F /* DialogPresentableType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +62,6 @@
 		D3D245B51EB7300E006BD34F /* DialogViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DialogViewBuilder.swift; path = builder/DialogViewBuilder.swift; sourceTree = "<group>"; };
 		D3D245C41EB7A09D006BD34F /* ConstantDialogViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantDialogViewType.swift; sourceTree = "<group>"; };
 		D3D245C61EB7A33B006BD34F /* PaddingConstantDialogViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingConstantDialogViewType.swift; sourceTree = "<group>"; };
-		D3D245CD1EB7B5D7006BD34F /* DialogPresentableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DialogPresentableType.swift; path = model/DialogPresentableType.swift; sourceTree = "<group>"; };
 		D6D2B77A9377C061664E9C73 /* Pods-SwiftDialogControllerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDialogControllerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDialogControllerTests/Pods-SwiftDialogControllerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,7 +110,6 @@
 		D3696CF31EB21C22007B7496 /* SwiftDialogController */ = {
 			isa = PBXGroup;
 			children = (
-				D3D245CA1EB7B2A3006BD34F /* model */,
 				D3D245B41EB72FF4006BD34F /* builder */,
 				D3696D0B1EB2245C007B7496 /* controller */,
 				D3696D0E1EB2245C007B7496 /* view */,
@@ -186,14 +183,6 @@
 				D3D245B51EB7300E006BD34F /* DialogViewBuilder.swift */,
 			);
 			name = builder;
-			sourceTree = "<group>";
-		};
-		D3D245CA1EB7B2A3006BD34F /* model */ = {
-			isa = PBXGroup;
-			children = (
-				D3D245CD1EB7B5D7006BD34F /* DialogPresentableType.swift */,
-			);
-			name = model;
 			sourceTree = "<group>";
 		};
 		F1D36DB0CEBCD01AC6043C4E /* Pods */ = {
@@ -423,7 +412,6 @@
 				D31DB0531EB82A8800473178 /* RatioConstantDialogViewType.swift in Sources */,
 				D3D245C51EB7A09D006BD34F /* ConstantDialogViewType.swift in Sources */,
 				D3696D121EB2245C007B7496 /* UIDialogController.swift in Sources */,
-				D3D245CE1EB7B5D7006BD34F /* DialogPresentableType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
