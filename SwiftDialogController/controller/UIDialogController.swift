@@ -147,6 +147,6 @@ public extension ControllerPresentableType {
         // transparent background.
         dialog.modalPresentationStyle = .overFullScreen
         dialog.modalTransitionStyle = .crossDissolve
-        present(dialog, animated: animated, completion: completion)
+        presentController(dialog, animated: animated, completion: completion)
     }
 }
