@@ -102,7 +102,10 @@ open class DialogPresenter: BaseViewControllerPresenter {
         // view as well.
         rxScreenOrientation
             .doOnNext({[weak view] in
-                view?.screenOrientationDidChange(to: $0)
+                view?.updateConstraints(withNewOrientation: $0)
+            })
+            .doOnNext({[weak view] in
+                view?.screenOrientationDidChange?(to: $0)
             })
             .subscribe()
             .addDisposableTo(disposeBag)

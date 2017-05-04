@@ -33,12 +33,16 @@ public extension CenterConstraintsIdentifierType {
     /// constraints are now applied differently.
     @objc optional var updateConstraintsOnOrientationChanged: Bool { get }
     
+    /// Call this method when screen orientation changes.
+    ///
+    /// - Parameter orientation: A BasicOrientation instance.
+    @objc optional func screenOrientationDidChange(to orientation: BasicOrientation)
+    
     /// This is a small tradeoff - instead of declaring constraints in each
     /// protocol, we can have the views that implement DialogViewType to
     /// declare their own constraints, so that we can use them to add common
     /// methods via extension.
     ///
-    
     /// The alternative is having to redeclare methods such as
     /// populateSubviews(with:) and screenOrientationDidChange(to:) in each
     /// sub view type.
@@ -93,7 +97,7 @@ public extension DialogViewType where Self: UIView {
     /// Change constraints on screen orientation changes.
     ///
     /// - Parameter orientation: The new screen orientation.
-    public func screenOrientationDidChange(to orientation: BasicOrientation) {
+    public func updateConstraints(withNewOrientation orientation: BasicOrientation) {
         guard
             updateConstraintsOnOrientationChanged ?? true,
             let superview = self.superview
