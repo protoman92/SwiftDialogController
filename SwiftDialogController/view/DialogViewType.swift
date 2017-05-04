@@ -28,6 +28,11 @@ public extension CenterConstraintsIdentifierType {
     /// Should be weakly referenced since this is a class-bound protocol.
     weak var orientationDetector: OrientationDetectorType? { get }
     
+    /// Check if the dialog view should update its constraints when app
+    /// orientation changes. E.g. long side becomes short side, so long-side
+    /// constraints are now applied differently.
+    @objc optional var updateConstraintsOnOrientationChanged: Bool { get }
+    
     /// This is a small tradeoff - instead of declaring constraints in each
     /// protocol, we can have the views that implement DialogViewType to
     /// declare their own constraints, so that we can use them to add common
@@ -91,7 +96,10 @@ public extension DialogViewType where Self: UIView {
     ///
     /// - Parameter orientation: The new screen orientation.
     public func screenOrientationDidChange(to orientation: BasicOrientation) {
-        guard let superview = self.superview else {
+        guard
+            updateConstraintsOnOrientationChanged ?? true,
+            let superview = self.superview
+        else {
             return
         }
         

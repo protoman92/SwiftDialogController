@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUIUtilities
 import SwiftUtilities
 import SwiftUtilitiesTests
 import SwiftUIUtilitiesTests
@@ -16,6 +17,10 @@ import RxTest
 import RxBlocking
 import XCTest
 @testable import SwiftDialogController
+
+extension CGSize {
+    var reversed: CGSize { return CGSize(width: height, height: width) }
+}
 
 class UIDialogControllerTests: XCTestCase {
     fileprivate let expectationTimeout: TimeInterval = 5
@@ -39,6 +44,7 @@ class UIDialogControllerTests: XCTestCase {
         controller = UIDialogController()
         presenter = Presenter(view: controller)
         controller.presenter = presenter
+        controller.viewDidLoad()
     }
     
     func test_pressButton_shouldDismissDialog() {
@@ -69,10 +75,16 @@ class UIDialogControllerTests: XCTestCase {
         
         for _ in 0..<tries {
             // Setup: Separate the tests in order to call them multiple times.
+            let shouldUpdate = Bool.random()
+            let firstSize = Bool.random() ? portraitSize : landscapeSize
+            let secondSize = firstSize.reversed
+            let firstOrientation = BasicOrientation(size: firstSize)
+            
             let dialogView = UIPaddingDialogView(
                 withDetector: presenter,
                 withLongSidePadding: CGFloat(Int.random(0, 100)),
-                withShortSidePadding: CGFloat(Int.random(0, 100))
+                withShortSidePadding: CGFloat(Int.random(0, 100)),
+                updateOnOrientationChanged: shouldUpdate
             )
             
             let testConstraints: () -> Void = {
@@ -102,33 +114,39 @@ class UIDialogControllerTests: XCTestCase {
                 XCTAssertNotNil(bottom)
                 
                 switch presenter.orientation {
-                case .landscape:
+                case .landscape where firstOrientation == .landscape,
+                     .landscape where shouldUpdate && firstOrientation == .portrait,
+                     .portrait where !shouldUpdate && firstOrientation == .landscape:
                     XCTAssertEqual(left!.constant, dialogView.longSidePadding)
                     XCTAssertEqual(right!.constant, dialogView.longSidePadding)
                     XCTAssertEqual(top!.constant, dialogView.shortSidePadding)
                     XCTAssertEqual(bottom!.constant, dialogView.shortSidePadding)
                     
-                case .portrait:
+                case .portrait where firstOrientation == .portrait,
+                     .portrait where shouldUpdate && firstOrientation == .landscape,
+                     .landscape where !shouldUpdate && firstOrientation == .portrait:
                     XCTAssertEqual(left!.constant, dialogView.shortSidePadding)
                     XCTAssertEqual(right!.constant, dialogView.shortSidePadding)
                     XCTAssertEqual(top!.constant, dialogView.longSidePadding)
                     XCTAssertEqual(bottom!.constant, dialogView.longSidePadding)
+                
+                default:
+                    fatalError()
                 }
             }
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: portraitSize, with: presenter)
+            controller.viewWillTransition(to: firstSize, with: presenter)
             controller.add(view: dialogView)
             
             // Then: Test that initial build succeeds.
             testConstraints()
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: landscapeSize, with: presenter)
+            controller.viewWillTransition(to: secondSize, with: presenter)
             
             // Then: Test that view constraints are updated accordingly.
             testConstraints()
-            
             dialogView.removeFromSuperview()
         }
     }
@@ -139,10 +157,16 @@ class UIDialogControllerTests: XCTestCase {
         
         for _ in 0..<tries {
             // Setup: Separate the tests in order to call them multiple times.
+            let shouldUpdate = Bool.random()
+            let firstSize = Bool.random() ? portraitSize : landscapeSize
+            let secondSize = firstSize.reversed
+            let firstOrientation = BasicOrientation(size: firstSize)
+            
             let dialogView = UIRatioDialogView(
                 withDetector: presenter,
                 withLongSideRatio: CGFloat(Int.random(1, 9)) / 10,
-                withShortSideRatio: CGFloat(Int.random(1, 9)) / 10
+                withShortSideRatio: CGFloat(Int.random(1, 9)) / 10,
+                updateOnOrientationChanged: shouldUpdate
             )
             
             let testConstraints: () -> Void = {
@@ -175,35 +199,41 @@ class UIDialogControllerTests: XCTestCase {
                 XCTAssertEqual(centerY!.constant, 0)
                 
                 switch presenter.orientation {
-                case .landscape:
+                case .landscape where firstOrientation == .landscape,
+                     .landscape where shouldUpdate && firstOrientation == .portrait,
+                     .portrait where !shouldUpdate && firstOrientation == .landscape:
                     XCTAssertEqual(floor(width!.multiplier),
                                    floor(dialogView.longSideRatio))
                     
                     XCTAssertEqual(floor(height!.multiplier),
                                    floor(dialogView.shortSideRatio))
                     
-                case .portrait:
+                case .portrait where firstOrientation == .portrait,
+                     .portrait where shouldUpdate && firstOrientation == .landscape,
+                     .landscape where !shouldUpdate && firstOrientation == .portrait:
                     XCTAssertEqual(floor(width!.multiplier),
                                    floor(dialogView.shortSideRatio))
                     
                     XCTAssertEqual(floor(height!.multiplier),
                                    floor(dialogView.longSideRatio))
+                    
+                default:
+                    fatalError()
                 }
             }
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: portraitSize, with: presenter)
+            controller.viewWillTransition(to: firstSize, with: presenter)
             controller.add(view: dialogView)
             
             // Then: Test that initial build succeeds.
             testConstraints()
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: landscapeSize, with: presenter)
+            controller.viewWillTransition(to: secondSize, with: presenter)
             
             // Then: Test that view constraints are updated accordingly.
             testConstraints()
-            
             dialogView.removeFromSuperview()
         }
     }
@@ -214,10 +244,16 @@ class UIDialogControllerTests: XCTestCase {
         
         for _ in 0..<tries {
             // Setup: Separate the tests in order to call them multiple times.
+            let shouldUpdate = Bool.random()
+            let firstSize = Bool.random() ? portraitSize : landscapeSize
+            let secondSize = firstSize.reversed
+            let firstOrientation = BasicOrientation(size: firstSize)
+            
             let dialogView = UIRatioPaddingDialogView(
                 withDetector: presenter,
                 withLongSideRatio: CGFloat(Int.random(1, 9)) / 10,
-                withShortSidePadding: CGFloat(Int.random(0, 100))
+                withShortSidePadding: CGFloat(Int.random(0, 100)),
+                updateOnOrientationChanged: shouldUpdate
             )
             
             let testConstraints: () -> Void = {
@@ -267,7 +303,9 @@ class UIDialogControllerTests: XCTestCase {
                 XCTAssertEqual(centerY!.constant, 0)
                 
                 switch presenter.orientation {
-                case .landscape:
+                case .landscape where firstOrientation == .landscape,
+                     .landscape where shouldUpdate && firstOrientation == .portrait,
+                     .portrait where !shouldUpdate && firstOrientation == .landscape:
                     XCTAssertNotNil(top)
                     XCTAssertNotNil(bottom)
                     XCTAssertNotNil(width)
@@ -279,7 +317,9 @@ class UIDialogControllerTests: XCTestCase {
                         floor(dialogView.longSideRatio)
                     )
                     
-                case .portrait:
+                case .portrait where firstOrientation == .portrait,
+                     .portrait where shouldUpdate && firstOrientation == .landscape,
+                     .landscape where !shouldUpdate && firstOrientation == .portrait:
                     XCTAssertNotNil(left)
                     XCTAssertNotNil(right)
                     XCTAssertNotNil(height)
@@ -288,22 +328,24 @@ class UIDialogControllerTests: XCTestCase {
                     
                     XCTAssertEqual(floor(height!.multiplier),
                                    floor(dialogView.longSideRatio))
+                    
+                default:
+                    fatalError()
                 }
             }
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: portraitSize, with: presenter)
+            controller.viewWillTransition(to: firstSize, with: presenter)
             controller.add(view: dialogView)
             
             // Then: Test that initial build succeeds.
             testConstraints()
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: landscapeSize, with: presenter)
+            controller.viewWillTransition(to: secondSize, with: presenter)
             
             // Then: Test that view constraints are updated accordingly.
             testConstraints()
-            
             dialogView.removeFromSuperview()
         }
     }
@@ -315,10 +357,16 @@ class UIDialogControllerTests: XCTestCase {
         
         for _ in 0..<tries {
             // Setup: Separate the tests in order to call them multiple times.
+            let shouldUpdate = Bool.random()
+            let firstSize = Bool.random() ? portraitSize : landscapeSize
+            let secondSize = firstSize.reversed
+            let firstOrientation = BasicOrientation(size: firstSize)
+            
             let dialogView = UIPaddingConstantDialogView(
                 withDetector: presenter,
                 withLongSideConstant: CGFloat(Int.random(100, 600)),
-                withShortSidePadding: CGFloat(Int.random(0, 100))
+                withShortSidePadding: CGFloat(Int.random(0, 100)),
+                updateOnOrientationChanged: shouldUpdate
             )
             
             let testConstraints: () -> Void = {
@@ -368,7 +416,9 @@ class UIDialogControllerTests: XCTestCase {
                 XCTAssertEqual(centerY!.constant, 0)
                 
                 switch presenter.orientation {
-                case .landscape:
+                case .landscape where firstOrientation == .landscape,
+                     .landscape where shouldUpdate && firstOrientation == .portrait,
+                     .portrait where !shouldUpdate && firstOrientation == .landscape:
                     XCTAssertNotNil(top)
                     XCTAssertNotNil(bottom)
                     XCTAssertNotNil(width)
@@ -381,7 +431,9 @@ class UIDialogControllerTests: XCTestCase {
                     XCTAssertNil(width!.secondItem)
                     XCTAssertEqual(width!.secondAttribute, .notAnAttribute)
                     
-                case .portrait:
+                case .portrait where firstOrientation == .portrait,
+                     .portrait where shouldUpdate && firstOrientation == .landscape,
+                     .landscape where !shouldUpdate && firstOrientation == .portrait:
                     XCTAssertNotNil(left)
                     XCTAssertNotNil(right)
                     XCTAssertNotNil(height)
@@ -393,22 +445,24 @@ class UIDialogControllerTests: XCTestCase {
                     
                     XCTAssertNil(height!.secondItem)
                     XCTAssertEqual(height!.secondAttribute, .notAnAttribute)
+                    
+                default:
+                    fatalError()
                 }
             }
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: portraitSize, with: presenter)
+            controller.viewWillTransition(to: firstSize, with: presenter)
             controller.add(view: dialogView)
             
             // Then: Test that initial build succeeds.
             testConstraints()
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: landscapeSize, with: presenter)
+            controller.viewWillTransition(to: secondSize, with: presenter)
             
             // Then: Test that view constraints are updated accordingly.
             testConstraints()
-            
             dialogView.removeFromSuperview()
         }
     }
@@ -420,10 +474,16 @@ class UIDialogControllerTests: XCTestCase {
         
         for _ in 0..<tries {
             // Setup: Separate the tests in order to call them multiple times.
+            let shouldUpdate = false
+            let firstSize = Bool.random() ? portraitSize : landscapeSize
+            let secondSize = firstSize.reversed
+            let firstOrientation = BasicOrientation(size: firstSize)
+            
             let dialogView = UIRatioConstantDialogView(
                 withDetector: presenter,
                 withLongSideConstant: CGFloat(Int.random(100, 600)),
-                withShortSideRatio: CGFloat(Int.random(1, 9)) / 10
+                withShortSideRatio: CGFloat(Int.random(1, 9)) / 10,
+                updateOnOrientationChanged: shouldUpdate
             )
             
             let testConstraints: () -> Void = {
@@ -463,7 +523,9 @@ class UIDialogControllerTests: XCTestCase {
                 XCTAssertEqual(centerY!.constant, 0)
                 
                 switch presenter.orientation {
-                case .landscape:
+                case .landscape where firstOrientation == .landscape,
+                     .landscape where shouldUpdate && firstOrientation == .portrait,
+                     .portrait where !shouldUpdate && firstOrientation == .landscape:
                     XCTAssertNotNil(directWidth)
                     XCTAssertNotNil(ratioHeight)
                     
@@ -478,7 +540,9 @@ class UIDialogControllerTests: XCTestCase {
                     XCTAssertEqual(floor(ratioHeight!.multiplier),
                                    floor(dialogView.shortSideRatio))
                     
-                case .portrait:
+                case .portrait where firstOrientation == .portrait,
+                     .portrait where shouldUpdate && firstOrientation == .landscape,
+                     .landscape where !shouldUpdate && firstOrientation == .portrait:
                     XCTAssertNotNil(directHeight)
                     XCTAssertNotNil(ratioWidth)
                     
@@ -492,22 +556,24 @@ class UIDialogControllerTests: XCTestCase {
                     
                     XCTAssertEqual(floor(ratioWidth!.multiplier),
                                    floor(dialogView.shortSideRatio))
+                    
+                default:
+                    fatalError()
                 }
             }
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: portraitSize, with: presenter)
+            controller.viewWillTransition(to: firstSize, with: presenter)
             controller.add(view: dialogView)
             
             // Then: Test that initial build succeeds.
             testConstraints()
             
             // When: Fake orientation change.
-            controller.viewWillTransition(to: landscapeSize, with: presenter)
+            controller.viewWillTransition(to: secondSize, with: presenter)
             
             // Then: Test that view constraints are updated accordingly.
             testConstraints()
-            
             dialogView.removeFromSuperview()
         }
     }

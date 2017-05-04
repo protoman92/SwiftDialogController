@@ -100,7 +100,7 @@ open class DialogPresenter: BaseViewControllerPresenter {
         
         // When screen size changes, change constraints for this dialog
         // view as well.
-        rxScreenOrientation 
+        rxScreenOrientation
             .doOnNext({[weak view] in
                 view?.screenOrientationDidChange(to: $0)
             })

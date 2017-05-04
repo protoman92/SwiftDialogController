@@ -14,9 +14,21 @@ import SwiftUIUtilities
 class UIBaseDialogView: UIView {
     weak var orientationDetector: OrientationDetectorType?
     
+    var updateOnOrientationChanged = true
+    
+    var updateConstraintsOnOrientationChanged: Bool {
+        return updateOnOrientationChanged
+    }
+    
     required init(withDetector detector: OrientationDetectorType) {
         self.orientationDetector = detector
         super.init(frame: CGRect.zero)
+    }
+    
+    convenience init(withDetector detector: OrientationDetectorType,
+                     updateOnOrientationChanged: Bool) {
+        self.init(withDetector: detector)
+        self.updateOnOrientationChanged = updateOnOrientationChanged
     }
     
     required public init?(coder aDecoder: NSCoder) { fatalError() }
@@ -34,8 +46,9 @@ class UIPaddingDialogView: UIBaseDialogView {
     
     convenience init(withDetector detector: OrientationDetectorType,
                      withLongSidePadding longSidePadding: CGFloat,
-                     withShortSidePadding shortSidePadding: CGFloat) {
-        self.init(withDetector: detector)
+                     withShortSidePadding shortSidePadding: CGFloat,
+                     updateOnOrientationChanged update: Bool) {
+        self.init(withDetector: detector, updateOnOrientationChanged: update)
         self.longSidePadding = longSidePadding
         self.shortSidePadding = shortSidePadding
     }
@@ -53,8 +66,9 @@ class UIRatioDialogView: UIBaseDialogView {
     
     convenience init(withDetector detector: OrientationDetectorType,
                      withLongSideRatio longSideRatio: CGFloat,
-                     withShortSideRatio shortSideRatio: CGFloat) {
-        self.init(withDetector: detector)
+                     withShortSideRatio shortSideRatio: CGFloat,
+                     updateOnOrientationChanged update: Bool) {
+        self.init(withDetector: detector, updateOnOrientationChanged: update)
         self.longSideRatio = longSideRatio
         self.shortSideRatio = shortSideRatio
     }
@@ -72,8 +86,9 @@ class UIRatioPaddingDialogView: UIBaseDialogView {
     
     convenience init(withDetector detector: OrientationDetectorType,
                      withLongSideRatio longSideRatio: CGFloat,
-                     withShortSidePadding shortSidePadding: CGFloat) {
-        self.init(withDetector: detector)
+                     withShortSidePadding shortSidePadding: CGFloat,
+                     updateOnOrientationChanged update: Bool) {
+        self.init(withDetector: detector, updateOnOrientationChanged: update)
         self.longSideRatio = longSideRatio
         self.shortSidePadding = shortSidePadding
     }
@@ -91,8 +106,9 @@ class UIPaddingConstantDialogView: UIBaseDialogView {
     
     convenience init(withDetector detector: OrientationDetectorType,
                      withLongSideConstant longSideConstant: CGFloat,
-                     withShortSidePadding shortSidePadding: CGFloat) {
-        self.init(withDetector: detector)
+                     withShortSidePadding shortSidePadding: CGFloat,
+                     updateOnOrientationChanged update: Bool) {
+        self.init(withDetector: detector, updateOnOrientationChanged: update)
         self.longSideConstant = longSideConstant
         self.shortSidePadding = shortSidePadding
     }
@@ -110,8 +126,9 @@ class UIRatioConstantDialogView: UIBaseDialogView {
     
     convenience init(withDetector detector: OrientationDetectorType,
                      withLongSideConstant longSideConstant: CGFloat,
-                     withShortSideRatio shortSideRatio: CGFloat) {
-        self.init(withDetector: detector)
+                     withShortSideRatio shortSideRatio: CGFloat,
+                     updateOnOrientationChanged update: Bool) {
+        self.init(withDetector: detector, updateOnOrientationChanged: update)
         self.longSideConstant = longSideConstant
         self.shortSideRatio = shortSideRatio
     }
