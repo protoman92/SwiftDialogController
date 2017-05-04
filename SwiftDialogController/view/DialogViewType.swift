@@ -48,8 +48,6 @@ public extension CenterConstraintsIdentifierType {
     ///   - child: The child UIView.
     func dialogConstraints(for parent: UIView, for child: UIView)
         -> [NSLayoutConstraint]
-    
-    init(withDetector detector: OrientationDetectorType)
 }
 
 public extension DialogViewType {
